@@ -955,7 +955,12 @@ else:
     files = glob.glob("dremel_multi_*.csv")
     if files:
         try:
-            df = pd.read_csv(max(files, key=os.path.getctime))
+            try:
+                df = pd.read_csv(max(files, key=os.path.getctime))
+                if len(df) == 0:
+                    df = None
+            except:
+                df = None
             if df.empty:
                 df = None
         except:
