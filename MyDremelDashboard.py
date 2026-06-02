@@ -111,7 +111,7 @@ DREMEL_PRODUCTS = [
     "Dremel 3000 Rotary Tool", "Dremel Lite 7760",
     "Dremel 4300", "Dremel Engraver 290", "Dremel Multi-Max MM40"
 ]
-ROLES = ["Social Media Manager", "Content Manager", "Email Marketing Manager", "E-Commerce Manager"]
+ROLES = ["Social Media Manager", "Content Manager", "Email Marketing Manager", "Website Manager", "E-Commerce Manager", "Product Manager"]
 NEXT_ACTIONS = [
     {"title": "Week 1 — Keyword Auto-Expansion",
      "detail": "Use YouTube autocomplete to expand 10 keywords into 50+ automatically.",
