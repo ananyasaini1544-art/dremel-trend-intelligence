@@ -1,0 +1,5 @@
+.env
+dremel_multi_*.csv
+dremel_trends_*.csv
+__pycache__/
+*.pyc
