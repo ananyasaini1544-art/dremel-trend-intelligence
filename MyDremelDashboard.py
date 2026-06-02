@@ -953,7 +953,13 @@ if run_scrape or auto_ref or not glob.glob("dremel_multi_*.csv"):
     st.success(f"Intelligence update complete — {len(df)} videos analysed from YouTube UK.")
 else:
     files = glob.glob("dremel_multi_*.csv")
-    if files: df = pd.read_csv(max(files, key=os.path.getctime))
+    if files:
+        try:
+            df = pd.read_csv(max(files, key=os.path.getctime))
+            if df.empty:
+                df = None
+        except:
+            df = None
 
 if df is None or len(df) == 0:
     st.warning("No data loaded. Click Refresh in the sidebar to begin scraping.")
