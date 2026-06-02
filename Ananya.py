@@ -1,7 +1,7 @@
 # ============================================================
 #  DREMEL — AI Trend Intelligence Dashboard
 #  Install: pip install streamlit pandas matplotlib requests vaderSentiment google-generativeai
-#  Run: streamlit run dremel_dashboard.py
+#  Run: streamlit run Ananya.py
 # ============================================================
 
 import streamlit as st
@@ -25,99 +25,198 @@ st.set_page_config(
 # ── CUSTOM CSS ───────────────────────────────────────────────
 st.markdown("""
 <style>
-    .main { background-color: #0A3D6B; }
-    .stApp { background-color: #0A3D6B; }
+    /* ── Base app background ── */
+    .stApp { background-color: #F7F8FA; }
+    .main  { background-color: #F7F8FA; }
 
+    /* ── Sidebar ── */
+    div[data-testid="stSidebarContent"] {
+        background-color: #1C1C2E;
+    }
+    div[data-testid="stSidebarContent"] * {
+        color: #E2E8F0 !important;
+    }
+    div[data-testid="stSidebarContent"] .stButton > button {
+        background-color: #E8681A;
+        color: white !important;
+        border: none;
+        border-radius: 8px;
+        font-weight: 600;
+        padding: 10px 0;
+        width: 100%;
+        transition: background 0.2s;
+    }
+    div[data-testid="stSidebarContent"] .stButton > button:hover {
+        background-color: #CF5A14;
+    }
+
+    /* ── Header ── */
     .dremel-header {
-        background: linear-gradient(135deg, #0A3D6B 0%, #0F5CA8 100%);
-        padding: 25px 30px;
-        border-radius: 12px;
-        margin-bottom: 20px;
+        background: #1C1C2E;
+        padding: 28px 36px;
+        border-radius: 14px;
+        margin-bottom: 24px;
         text-align: center;
         border-left: 6px solid #E8681A;
     }
     .dremel-header h1 {
-        color: white;
-        font-size: 2.2em;
+        color: #FFFFFF;
+        font-size: 2em;
         font-weight: 900;
-        letter-spacing: 4px;
+        letter-spacing: 6px;
         margin: 0;
     }
     .dremel-header p {
-        color: #A8C9E8;
-        margin: 5px 0 0 0;
-        font-size: 1em;
+        color: #94A3B8;
+        margin: 6px 0 0 0;
+        font-size: 0.95em;
+        letter-spacing: 0.5px;
     }
 
+    /* ── Metric cards ── */
     .metric-card {
-        background: linear-gradient(135deg, #0F5CA8, #0A3D6B);
-        border-radius: 10px;
-        padding: 18px;
+        background: #FFFFFF;
+        border-radius: 12px;
+        padding: 20px 16px;
         text-align: center;
+        border: 1px solid #E2E8F0;
         border-top: 4px solid #E8681A;
         margin-bottom: 10px;
+        box-shadow: 0 1px 4px rgba(0,0,0,0.06);
     }
-    .metric-card h2 { color: white; font-size: 2em; margin: 0; font-weight: 900; }
-    .metric-card p { color: #A8C9E8; margin: 5px 0 0 0; font-size: 0.85em; }
+    .metric-card h2 {
+        color: #1C1C2E;
+        font-size: 2em;
+        margin: 0;
+        font-weight: 800;
+    }
+    .metric-card p {
+        color: #64748B;
+        margin: 6px 0 0 0;
+        font-size: 0.82em;
+        font-weight: 500;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
 
+    /* ── Gap cards ── */
     .gap-card-red {
-        background: #1a0a0a;
-        border-left: 5px solid #E74C3C;
-        border-radius: 8px;
-        padding: 12px 16px;
-        margin-bottom: 8px;
+        background: #FFF5F5;
+        border-left: 5px solid #E53E3E;
+        border-radius: 0 8px 8px 0;
+        padding: 14px 18px;
+        margin-bottom: 10px;
     }
     .gap-card-green {
-        background: #0a1a0a;
-        border-left: 5px solid #2ECC71;
-        border-radius: 8px;
-        padding: 12px 16px;
-        margin-bottom: 8px;
-    }
-    .gap-card-red h4 { color: #E74C3C; margin: 0 0 4px 0; }
-    .gap-card-green h4 { color: #2ECC71; margin: 0 0 4px 0; }
-    .gap-card-red p, .gap-card-green p { color: #ccc; margin: 0; font-size: 0.85em; }
-
-    .brief-box {
-        background: #0D3A5C;
-        border-radius: 10px;
-        padding: 16px;
+        background: #F0FFF4;
+        border-left: 5px solid #38A169;
+        border-radius: 0 8px 8px 0;
+        padding: 14px 18px;
         margin-bottom: 10px;
+    }
+    .gap-card-red h4 {
+        color: #C53030;
+        margin: 0 0 4px 0;
+        font-size: 1em;
+    }
+    .gap-card-green h4 {
+        color: #276749;
+        margin: 0 0 4px 0;
+        font-size: 1em;
+    }
+    .gap-card-red p, .gap-card-green p {
+        color: #4A5568;
+        margin: 2px 0 0 0;
+        font-size: 0.85em;
+    }
+
+    /* ── Brief boxes ── */
+    .brief-box {
+        background: #FFFFFF;
+        border-radius: 10px;
+        padding: 14px 16px;
+        margin-bottom: 10px;
+        border: 1px solid #E2E8F0;
         border-left: 4px solid #E8681A;
     }
     .brief-label {
-        background: #0F5CA8;
-        color: white;
+        background: #1C1C2E;
+        color: #E2E8F0;
         padding: 3px 10px;
         border-radius: 4px;
-        font-size: 0.75em;
-        font-weight: bold;
+        font-size: 0.72em;
+        font-weight: 700;
         display: inline-block;
         margin-bottom: 6px;
+        letter-spacing: 0.5px;
+        text-transform: uppercase;
     }
-    .brief-value { color: white; font-size: 0.95em; margin: 0; }
+    .brief-value {
+        color: #1C1C2E;
+        font-size: 0.92em;
+        margin: 0;
+        line-height: 1.5;
+    }
 
+    /* ── Tabs ── */
+    .stTabs [data-baseweb="tab-list"] {
+        background: #FFFFFF;
+        border-radius: 10px;
+        padding: 4px;
+        border: 1px solid #E2E8F0;
+        gap: 2px;
+    }
     .stTabs [data-baseweb="tab"] {
-        color: #A8C9E8;
-        font-weight: bold;
+        color: #64748B;
+        font-weight: 600;
+        border-radius: 8px;
+        padding: 8px 16px;
     }
     .stTabs [aria-selected="true"] {
-        color: white;
-        border-bottom: 3px solid #E8681A;
+        background: #1C1C2E !important;
+        color: #FFFFFF !important;
     }
 
-    div[data-testid="stSidebarContent"] {
-        background-color: #071F35;
+    /* ── Dataframe ── */
+    .stDataFrame { border-radius: 10px; overflow: hidden; }
+
+    /* ── Divider ── */
+    hr { border-color: #E2E8F0; }
+
+    /* ── Audience segment cards ── */
+    .segment-card {
+        background: #FFFFFF;
+        border-radius: 10px;
+        padding: 16px 18px;
+        margin-bottom: 12px;
+        border: 1px solid #E2E8F0;
+        border-left: 5px solid #1C1C2E;
     }
 
-    .keyword-pill {
-        display: inline-block;
-        background: #0F5CA8;
-        color: white;
-        padding: 4px 12px;
-        border-radius: 20px;
-        margin: 3px;
-        font-size: 0.8em;
+    /* ── Video cards ── */
+    .video-card-dremel {
+        background: #F0FFF4;
+        border-radius: 8px;
+        padding: 12px 16px;
+        margin-bottom: 8px;
+        border-left: 4px solid #38A169;
+    }
+    .video-card-other {
+        background: #FFFFFF;
+        border-radius: 8px;
+        padding: 12px 16px;
+        margin-bottom: 8px;
+        border-left: 4px solid #CBD5E0;
+        border: 1px solid #E2E8F0;
+    }
+
+    /* ── Priority gap box ── */
+    .priority-gap {
+        background: #FFF5F5;
+        border-left: 4px solid #E53E3E;
+        border-radius: 0 8px 8px 0;
+        padding: 14px;
+        margin-top: 10px;
     }
 </style>
 """, unsafe_allow_html=True)
@@ -126,10 +225,6 @@ st.markdown("""
 API_KEY = "AIzaSyAtSS10C4ABESNKEt-vM0K6VSm7f06hD0c"
 BASE_URL = "https://www.googleapis.com/youtube/v3/search"
 STATS_URL = "https://www.googleapis.com/youtube/v3/videos"
-
-DREMEL_BLUE = "#0F5CA8"
-DREMEL_DARK = "#0A3D6B"
-ORANGE = "#E8681A"
 
 KEYWORDS = [
     "furniture flip UK",
@@ -200,6 +295,14 @@ ROLE_BRIEFS = {
     }
 }
 
+# ── Chart palette ─────────────────────────────────────────────
+CHART_BG      = "#F7F8FA"
+CHART_SURFACE = "#FFFFFF"
+CHART_GREEN   = "#38A169"
+CHART_RED     = "#E53E3E"
+CHART_ORANGE  = "#E8681A"
+CHART_DARK    = "#1C1C2E"
+CHART_MUTED   = "#94A3B8"
 
 # ── HELPER FUNCTIONS ─────────────────────────────────────────
 
@@ -256,16 +359,6 @@ def trend_score(views, likes, comments):
     return round(engagement * 0.6 + size_score * 0.4, 2)
 
 
-def load_or_scrape(keywords):
-    files = glob.glob("dremel_trends_*.csv")
-    if files:
-        latest = max(files, key=os.path.getctime)
-        df = pd.read_csv(latest)
-        age = datetime.fromtimestamp(os.path.getctime(latest))
-        return df, age
-    return None, None
-
-
 def scrape_all(keywords, progress_bar, status_text):
     all_videos = []
     for i, kw in enumerate(keywords):
@@ -304,28 +397,6 @@ def clean_label(kw):
     }.get(kw, kw)
 
 
-def generate_brief_gemini(trend, role, growth, product):
-    try:
-        import google.generativeai as genai
-        genai.configure(api_key="YOUR_GEMINI_KEY_HERE")
-        model = genai.GenerativeModel("gemini-1.5-flash")
-        prompt = f"""
-You are a digital marketing expert for Dremel, a UK DIY tools brand.
-
-Trend detected: {trend} (growth: {growth})
-Role: {role}
-Dremel product to feature: {product}
-
-Generate a specific, actionable content brief for the {role}.
-Include: hook, content idea, platform, format, CTA, hashtags, posting time.
-Keep it concise and practical. Max 150 words.
-"""
-        response = model.generate_content(prompt)
-        return response.text
-    except Exception as e:
-        return None
-
-
 def generate_brief_template(trend, role, growth, product):
     r = ROLE_BRIEFS.get(role, ROLE_BRIEFS["Social Media Manager"])
     hook = r["hook_template"].replace("{trend}", trend).replace(
@@ -343,6 +414,41 @@ def generate_brief_template(trend, role, growth, product):
     }
 
 
+def make_chart(lb_sorted, x_col, x_label, title, fmt_fn):
+    fig, ax = plt.subplots(figsize=(7, 5))
+    fig.patch.set_facecolor(CHART_BG)
+    ax.set_facecolor(CHART_SURFACE)
+
+    colors = [CHART_GREEN if p else CHART_RED for p in lb_sorted["dremel_present"]]
+    vals = lb_sorted[x_col]
+
+    bars = ax.barh(lb_sorted["keyword_clean"], vals, color=colors,
+                   edgecolor="none", height=0.55)
+
+    for bar, val in zip(bars, vals):
+        ax.text(bar.get_width() + vals.max() * 0.02,
+                bar.get_y() + bar.get_height() / 2,
+                fmt_fn(val), va="center", color=CHART_DARK,
+                fontsize=9, fontweight="600")
+
+    ax.set_title(title, color=CHART_DARK, fontweight="bold", pad=14, fontsize=11)
+    ax.set_xlabel(x_label, color=CHART_MUTED, fontsize=9)
+    ax.tick_params(colors=CHART_DARK, labelsize=8)
+    ax.spines[:].set_visible(False)
+    ax.set_xlim(0, vals.max() * 1.28)
+    ax.xaxis.label.set_color(CHART_MUTED)
+    ax.tick_params(axis="x", colors=CHART_MUTED)
+
+    covered = mpatches.Patch(color=CHART_GREEN, label="Dremel Present")
+    gap_p   = mpatches.Patch(color=CHART_RED,   label="Gap — Missing")
+    ax.legend(handles=[covered, gap_p], facecolor=CHART_SURFACE,
+              edgecolor="#E2E8F0", labelcolor=CHART_DARK, fontsize=8,
+              framealpha=1)
+
+    plt.tight_layout()
+    return fig
+
+
 # ════════════════════════════════════════════════════════════
 #  SIDEBAR
 # ════════════════════════════════════════════════════════════
@@ -353,7 +459,8 @@ with st.sidebar:
 
     st.markdown("**Select Keywords to Track**")
     selected_keywords = st.multiselect(
-        "Keywords", KEYWORDS,
+        "Keywords",
+        KEYWORDS,
         default=KEYWORDS,
         label_visibility="collapsed",
         key="kw_select"
@@ -362,7 +469,8 @@ with st.sidebar:
     st.markdown("---")
     st.markdown("**Age Segment Filter**")
     age_filter = st.selectbox(
-        "Age", ["All Ages"] + list(AGE_SEGMENTS.keys()),
+        "Age Segment",
+        ["All Ages"] + list(AGE_SEGMENTS.keys()),
         label_visibility="collapsed",
         key="age_select"
     )
@@ -376,11 +484,15 @@ with st.sidebar:
     if files:
         latest = max(files, key=os.path.getctime)
         age = datetime.fromtimestamp(os.path.getctime(latest))
-        st.markdown(f"<small style='color:#A8C9E8'>{age.strftime('%d %b %Y, %H:%M')}</small>",
-                    unsafe_allow_html=True)
+        st.markdown(
+            f"<small style='color:#94A3B8'>{age.strftime('%d %b %Y, %H:%M')}</small>",
+            unsafe_allow_html=True
+        )
     else:
-        st.markdown("<small style='color:#E74C3C'>No data yet — click Refresh</small>",
-                    unsafe_allow_html=True)
+        st.markdown(
+            "<small style='color:#FC8181'>No data yet — click Refresh</small>",
+            unsafe_allow_html=True
+        )
 
 # ════════════════════════════════════════════════════════════
 #  HEADER
@@ -431,10 +543,12 @@ if age_filter != "All Ages":
 # Leaderboard
 leaderboard = (
     df.groupby("keyword_clean")
-    .agg(avg_score=("trend_score", "mean"),
-         avg_views=("views", "mean"),
-         video_count=("video_id", "count"),
-         dremel_present=("is_dremel", "any"))
+    .agg(
+        avg_score=("trend_score", "mean"),
+        avg_views=("views", "mean"),
+        video_count=("video_id", "count"),
+        dremel_present=("is_dremel", "any")
+    )
     .sort_values("avg_score", ascending=False)
     .reset_index()
 )
@@ -444,20 +558,20 @@ leaderboard = (
 # ════════════════════════════════════════════════════════════
 col1, col2, col3, col4 = st.columns(4)
 
-top_trend = leaderboard.iloc[0]["keyword_clean"]
-top_views = int(leaderboard["avg_views"].max())
-gaps = len(leaderboard[~leaderboard["dremel_present"]])
+top_trend    = leaderboard.iloc[0]["keyword_clean"]
+top_views    = int(leaderboard["avg_views"].max())
+gaps         = len(leaderboard[~leaderboard["dremel_present"]])
 total_videos = len(df)
 
 with col1:
     st.markdown(f"""<div class='metric-card'>
-        <h2>#{top_trend}</h2><p>Top Trending Topic</p></div>""", unsafe_allow_html=True)
+        <h2>{top_trend}</h2><p>Top Trending Topic</p></div>""", unsafe_allow_html=True)
 with col2:
     st.markdown(f"""<div class='metric-card'>
-        <h2>{top_views // 1_000_000}M</h2><p>Peak Avg Views</p></div>""", unsafe_allow_html=True)
+        <h2>{top_views // 1_000_000}M+</h2><p>Peak Avg Views</p></div>""", unsafe_allow_html=True)
 with col3:
     st.markdown(f"""<div class='metric-card'>
-        <h2>{gaps}/8</h2><p>Content Gaps Found</p></div>""", unsafe_allow_html=True)
+        <h2>{gaps} / 8</h2><p>Content Gaps Found</p></div>""", unsafe_allow_html=True)
 with col4:
     st.markdown(f"""<div class='metric-card'>
         <h2>{total_videos}</h2><p>Videos Analysed</p></div>""", unsafe_allow_html=True)
@@ -483,70 +597,35 @@ with tab1:
     col_a, col_b = st.columns(2)
 
     with col_a:
-        fig, ax = plt.subplots(figsize=(7, 5))
-        fig.patch.set_facecolor("#0A3D6B")
-        ax.set_facecolor("#0D3A5C")
-
-        lb_sorted = leaderboard.sort_values("avg_score", ascending=True)
-        colors = ["#2ECC71" if p else "#E74C3C" for p in lb_sorted["dremel_present"]]
-
-        bars = ax.barh(lb_sorted["keyword_clean"], lb_sorted["avg_score"],
-                       color=colors, edgecolor="none", height=0.6)
-
-        for bar, val in zip(bars, lb_sorted["avg_score"]):
-            ax.text(bar.get_width() + 0.05, bar.get_y() + bar.get_height() / 2,
-                    f"{val:.2f}", va="center", color="white", fontsize=9, fontweight="bold")
-
-        ax.set_title("Trend Score by Keyword", color="white", fontweight="bold", pad=12)
-        ax.set_xlabel("Trend Score", color="#A8C9E8")
-        ax.tick_params(colors="white", labelsize=8)
-        ax.spines[:].set_visible(False)
-        ax.set_xlim(0, lb_sorted["avg_score"].max() * 1.25)
-
-        covered = mpatches.Patch(color="#2ECC71", label="Dremel Present")
-        gap_p = mpatches.Patch(color="#E74C3C", label="GAP — Missing")
-        ax.legend(handles=[covered, gap_p], facecolor="#0A3D6B",
-                  edgecolor="none", labelcolor="white", fontsize=8)
-
-        plt.tight_layout()
-        st.pyplot(fig)
+        lb_score = leaderboard.sort_values("avg_score", ascending=True)
+        fig1 = make_chart(
+            lb_score, "avg_score", "Trend Score",
+            "Trend Score by Keyword",
+            lambda v: f"{v:.2f}"
+        )
+        st.pyplot(fig1)
         plt.close()
 
     with col_b:
-        fig2, ax2 = plt.subplots(figsize=(7, 5))
-        fig2.patch.set_facecolor("#0A3D6B")
-        ax2.set_facecolor("#0D3A5C")
-
-        lb_views = leaderboard.sort_values("avg_views", ascending=True)
-        colors2 = ["#2ECC71" if p else "#E8681A" for p in lb_views["dremel_present"]]
-
-        bars2 = ax2.barh(lb_views["keyword_clean"],
-                         lb_views["avg_views"] / 1_000_000,
-                         color=colors2, edgecolor="none", height=0.6)
-
-        for bar, val in zip(bars2, lb_views["avg_views"] / 1_000_000):
-            ax2.text(bar.get_width() + 0.5, bar.get_y() + bar.get_height() / 2,
-                     f"{val:.1f}M", va="center", color="white", fontsize=9, fontweight="bold")
-
-        ax2.set_title("Average Views per Keyword", color="white", fontweight="bold", pad=12)
-        ax2.set_xlabel("Avg Views (Millions)", color="#A8C9E8")
-        ax2.tick_params(colors="white", labelsize=8)
-        ax2.spines[:].set_visible(False)
-        ax2.set_xlim(0, lb_views["avg_views"].max() / 1_000_000 * 1.3)
-
-        plt.tight_layout()
+        lb_views = leaderboard.sort_values("avg_views", ascending=True).copy()
+        lb_views["avg_views_m"] = lb_views["avg_views"] / 1_000_000
+        fig2 = make_chart(
+            lb_views, "avg_views_m", "Avg Views (Millions)",
+            "Average Views per Keyword",
+            lambda v: f"{v:.1f}M"
+        )
         st.pyplot(fig2)
         plt.close()
 
-    # Table
     st.markdown("#### Full Leaderboard Table")
     display_lb = leaderboard.copy()
     display_lb["avg_views"] = display_lb["avg_views"].apply(lambda x: f"{int(x):,}")
     display_lb["avg_score"] = display_lb["avg_score"].apply(lambda x: f"{x:.2f}")
     display_lb["dremel_present"] = display_lb["dremel_present"].apply(
-        lambda x: "✅ Yes" if x else "❌ GAP")
+        lambda x: "✅ Yes" if x else "❌ Gap"
+    )
     display_lb.columns = ["Keyword", "Avg Score", "Avg Views", "Videos", "Dremel Present?"]
-    st.dataframe(display_lb, use_container_width=True, hide_index=True)
+    st.dataframe(display_lb, width="stretch", hide_index=True)
 
 # ── TAB 2: GAP ANALYSIS ──────────────────────────────────────
 with tab2:
@@ -558,39 +637,40 @@ with tab2:
     with col_g1:
         gaps_df = leaderboard.sort_values("avg_score", ascending=False)
         for _, row in gaps_df.iterrows():
-            present = row["dremel_present"]
+            present    = row["dremel_present"]
             card_class = "gap-card-green" if present else "gap-card-red"
-            status = "✅ Dremel is present" if present else "❌ NO DREMEL CONTENT — CREATE NOW"
-            action = "Maintain current posting frequency" if present else f"Immediate opportunity: {int(row['avg_views'] / 1e6):.0f}M avg views untapped"
+            status     = "✅ Dremel is present" if present else "❌ NO DREMEL CONTENT — CREATE NOW"
+            action     = (
+                "Maintain current posting frequency" if present
+                else f"Immediate opportunity: {int(row['avg_views'] / 1e6):.0f}M avg views untapped"
+            )
             st.markdown(f"""
             <div class='{card_class}'>
                 <h4>{row['keyword_clean']} — Score: {row['avg_score']:.2f}</h4>
                 <p><strong>{status}</strong></p>
                 <p>{action}</p>
-            </div>
-            """, unsafe_allow_html=True)
+            </div>""", unsafe_allow_html=True)
 
     with col_g2:
         st.markdown("#### Gap Summary")
-        n_gaps = len(leaderboard[~leaderboard["dremel_present"]])
-        n_covered = len(leaderboard[leaderboard["dremel_present"]])
+        n_gaps        = len(leaderboard[~leaderboard["dremel_present"]])
+        n_covered     = len(leaderboard[leaderboard["dremel_present"]])
         total_gap_views = leaderboard[~leaderboard["dremel_present"]]["avg_views"].sum()
 
         st.metric("Topics with NO Dremel content", f"{n_gaps} / {len(leaderboard)}")
-        st.metric("Total untapped avg views", f"{int(total_gap_views / 1e6)}M+")
-        st.metric("Topics Dremel covers", f"{n_covered}")
+        st.metric("Total untapped avg views",       f"{int(total_gap_views / 1e6)}M+")
+        st.metric("Topics Dremel covers",           f"{n_covered}")
 
         st.markdown("---")
         st.markdown("**Top Priority Gap:**")
         top_gap = leaderboard[~leaderboard["dremel_present"]].iloc[0]
         st.markdown(f"""
-        <div style='background:#1a0a0a; border-left:4px solid #E74C3C;
-             border-radius:8px; padding:12px; margin-top:8px;'>
-            <p style='color:#E74C3C; font-weight:bold; margin:0;'>
+        <div class='priority-gap'>
+            <p style='color:#C53030; font-weight:700; margin:0; font-size:1em;'>
                 {top_gap['keyword_clean']}</p>
-            <p style='color:white; margin:4px 0 0 0; font-size:0.85em;'>
+            <p style='color:#4A5568; margin:5px 0 0 0; font-size:0.85em;'>
                 Avg {int(top_gap['avg_views'] / 1e6)}M views · Score {top_gap['avg_score']:.2f}</p>
-            <p style='color:#E8681A; margin:4px 0 0 0; font-size:0.8em;'>
+            <p style='color:#E8681A; margin:5px 0 0 0; font-size:0.82em; font-weight:600;'>
                 → Create content immediately</p>
         </div>""", unsafe_allow_html=True)
 
@@ -598,24 +678,30 @@ with tab2:
 with tab3:
     st.markdown("### Trending DIY Videos — UK YouTube")
 
-    selected_kw = st.selectbox("Filter by keyword:", ["All"] + list(df["keyword_clean"].unique()))
+    selected_kw = st.selectbox(
+        "Filter by keyword:",
+        ["All"] + list(df["keyword_clean"].unique()),
+        key="video_kw_filter"
+    )
 
-    if selected_kw == "All":
-        videos_df = df.sort_values("trend_score", ascending=False).head(20)
-    else:
-        videos_df = df[df["keyword_clean"] == selected_kw].sort_values(
-            "trend_score", ascending=False).head(20)
+    videos_df = (
+        df.sort_values("trend_score", ascending=False).head(20)
+        if selected_kw == "All"
+        else df[df["keyword_clean"] == selected_kw]
+            .sort_values("trend_score", ascending=False).head(20)
+    )
 
     for _, row in videos_df.iterrows():
-        dremel_badge = "🟢 DREMEL" if row["is_dremel"] else "🔴 Competitor/Creator"
+        dremel_badge = "🟢 DREMEL" if row["is_dremel"] else "⬜ Competitor / Creator"
+        card_class   = "video-card-dremel" if row["is_dremel"] else "video-card-other"
+        title_color  = "#276749" if row["is_dremel"] else "#1C1C2E"
         st.markdown(f"""
-        <div style='background:#0D3A5C; border-radius:8px; padding:12px;
-             margin-bottom:8px; border-left:3px solid {"#2ECC71" if row["is_dremel"] else "#E8681A"}'>
-            <p style='color:white; font-weight:bold; margin:0; font-size:0.95em;'>
-                {row['title'][:80]}...</p>
-            <p style='color:#A8C9E8; margin:4px 0 0 0; font-size:0.8em;'>
-                {row['channel']} · {int(row['views']):,} views ·
-                Score: {row['trend_score']} · {dremel_badge}</p>
+        <div class='{card_class}'>
+            <p style='color:{title_color}; font-weight:600; margin:0; font-size:0.93em;'>
+                {row['title'][:85]}...</p>
+            <p style='color:#64748B; margin:5px 0 0 0; font-size:0.8em;'>
+                {row['channel']} &nbsp;·&nbsp; {int(row['views']):,} views &nbsp;·&nbsp;
+                Score: {row['trend_score']} &nbsp;·&nbsp; {dremel_badge}</p>
         </div>""", unsafe_allow_html=True)
 
 # ── TAB 4: AI IDEATION CENTRE ────────────────────────────────
@@ -627,13 +713,15 @@ with tab4:
 
     with col_i1:
         selected_trend = st.selectbox(
-            "Select Trending Topic:",
-            leaderboard["keyword_clean"].tolist()
+            "Trending Topic:",
+            leaderboard["keyword_clean"].tolist(),
+            key="ideation_trend"
         )
     with col_i2:
         selected_role = st.selectbox(
-            "Select Your Role:",
-            list(ROLE_BRIEFS.keys())
+            "Your Role:",
+            list(ROLE_BRIEFS.keys()),
+            key="ideation_role"
         )
     with col_i3:
         dremel_products = [
@@ -643,13 +731,17 @@ with tab4:
             "Dremel Engraver 290",
             "Dremel Multi-Max MM40"
         ]
-        selected_product = st.selectbox("Dremel Product to Feature:", dremel_products)
+        selected_product = st.selectbox(
+            "Dremel Product:",
+            dremel_products,
+            key="ideation_product"
+        )
 
     generate_btn = st.button("Generate Content Brief", use_container_width=True)
 
     if generate_btn:
         trend_row = leaderboard[leaderboard["keyword_clean"] == selected_trend].iloc[0]
-        growth = f"+{trend_row['avg_score']:.0f}% engagement score"
+        growth    = f"+{trend_row['avg_score']:.0f}% engagement score"
 
         st.markdown("---")
         st.markdown(f"#### Content Brief: **{selected_trend}** × **{selected_role}**")
@@ -658,54 +750,53 @@ with tab4:
 
         col_b1, col_b2 = st.columns(2)
         items = list(brief.items())
-        half = len(items) // 2
+        half  = len(items) // 2
 
         for label, value in items[:half]:
-            with col_b1:
-                st.markdown(f"""
-                <div class='brief-box'>
-                    <span class='brief-label'>{label}</span>
-                    <p class='brief-value'>{value}</p>
-                </div>""", unsafe_allow_html=True)
+            col_b1.markdown(f"""
+            <div class='brief-box'>
+                <span class='brief-label'>{label}</span>
+                <p class='brief-value'>{value}</p>
+            </div>""", unsafe_allow_html=True)
 
         for label, value in items[half:]:
-            with col_b2:
-                st.markdown(f"""
-                <div class='brief-box'>
-                    <span class='brief-label'>{label}</span>
-                    <p class='brief-value'>{value}</p>
-                </div>""", unsafe_allow_html=True)
+            col_b2.markdown(f"""
+            <div class='brief-box'>
+                <span class='brief-label'>{label}</span>
+                <p class='brief-value'>{value}</p>
+            </div>""", unsafe_allow_html=True)
 
-        # Keyword → Sentence → Idea expansion
+        # Keyword → Sentence → Idea
         st.markdown("---")
-        st.markdown("#### Keyword → Sentence → Idea (Content Depth)")
+        st.markdown("#### Keyword → Sentence → Idea")
 
         col_k1, col_k2, col_k3 = st.columns(3)
+
+        def depth_card(label, border_color, label_color, body):
+            return f"""
+            <div style='background:#FFFFFF; border-radius:10px; padding:16px;
+                 border:1px solid #E2E8F0; border-top:4px solid {border_color};'>
+                <p style='color:{label_color}; font-size:0.72em; font-weight:700;
+                     margin:0; text-transform:uppercase; letter-spacing:0.5px;'>{label}</p>
+                <p style='color:#1C1C2E; font-weight:600; margin:8px 0 0 0;
+                     font-size:0.9em; line-height:1.5;'>{body}</p>
+            </div>"""
+
         with col_k1:
-            st.markdown(f"""
-            <div style='background:#0D3A5C; border-radius:8px; padding:14px;
-                 border-top:3px solid #0F5CA8;'>
-                <p style='color:#A8C9E8; font-size:0.8em; margin:0;'>LEVEL 1 — KEYWORD</p>
-                <p style='color:white; font-weight:bold; margin:6px 0 0 0;'>
-                    {selected_trend}</p>
-            </div>""", unsafe_allow_html=True)
+            st.markdown(depth_card(
+                "Level 1 — Keyword", "#1C1C2E", "#64748B",
+                selected_trend
+            ), unsafe_allow_html=True)
         with col_k2:
-            st.markdown(f"""
-            <div style='background:#0D3A5C; border-radius:8px; padding:14px;
-                 border-top:3px solid #E8681A;'>
-                <p style='color:#A8C9E8; font-size:0.8em; margin:0;'>LEVEL 2 — SEARCH INTENT</p>
-                <p style='color:white; font-weight:bold; margin:6px 0 0 0;'>
-                    "How to do {selected_trend.lower()} for beginners UK"</p>
-            </div>""", unsafe_allow_html=True)
+            st.markdown(depth_card(
+                "Level 2 — Search Intent", "#E8681A", "#E8681A",
+                f"How to do {selected_trend.lower()} for beginners UK"
+            ), unsafe_allow_html=True)
         with col_k3:
-            st.markdown(f"""
-            <div style='background:#0D3A5C; border-radius:8px; padding:14px;
-                 border-top:3px solid #2ECC71;'>
-                <p style='color:#A8C9E8; font-size:0.8em; margin:0;'>LEVEL 3 — CONTENT IDEA</p>
-                <p style='color:white; font-weight:bold; margin:6px 0 0 0;'>
-                    "I tried {selected_trend.lower()} using only a {selected_product} —
-                    here is what happened"</p>
-            </div>""", unsafe_allow_html=True)
+            st.markdown(depth_card(
+                "Level 3 — Content Idea", "#38A169", "#38A169",
+                f"I tried {selected_trend.lower()} using only a {selected_product} — here's what happened"
+            ), unsafe_allow_html=True)
 
 # ── TAB 5: AUDIENCE SEGMENTS ─────────────────────────────────
 with tab5:
@@ -713,34 +804,32 @@ with tab5:
     st.markdown("*Which age groups are most interested in each DIY trend*")
 
     for age, keywords in AGE_SEGMENTS.items():
-        matching = [k for k in keywords if any(
-            k.lower() in kw.lower() for kw in df["keyword"].unique()
-        )]
-        rel_df = df[df["keyword"].apply(
-            lambda x: any(k in x.lower() for k in keywords)
-        )]
-
+        rel_df    = df[df["keyword"].apply(lambda x: any(k in x.lower() for k in keywords))]
         avg_views = int(rel_df["views"].mean()) if len(rel_df) > 0 else 0
-        video_count = len(rel_df)
+        vid_count = len(rel_df)
+
+        pills = " ".join([
+            f"<span style='background:#EDF2F7; color:#2D3748; padding:3px 10px; "
+            f"border-radius:20px; font-size:0.78em; font-weight:500; "
+            f"margin:2px; display:inline-block;'>{k}</span>"
+            for k in keywords
+        ])
 
         st.markdown(f"""
-        <div style='background:#0D3A5C; border-radius:10px; padding:16px;
-             margin-bottom:12px; border-left:5px solid #0F5CA8;'>
-            <h4 style='color:white; margin:0;'>{age}</h4>
-            <p style='color:#A8C9E8; margin:6px 0; font-size:0.85em;'>
-                Relevant keywords: {', '.join([f'<span class="keyword-pill">{k}</span>'
-                                               for k in keywords])}
-            </p>
-            <p style='color:white; margin:4px 0; font-size:0.9em;'>
-                Avg views in segment: <strong>{avg_views:,}</strong> ·
-                Videos found: <strong>{video_count}</strong>
+        <div class='segment-card'>
+            <h4 style='color:#1C1C2E; margin:0 0 8px 0;'>{age}</h4>
+            <div style='margin-bottom:8px;'>{pills}</div>
+            <p style='color:#4A5568; margin:0; font-size:0.88em;'>
+                Avg views in segment: <strong>{avg_views:,}</strong> &nbsp;·&nbsp;
+                Videos found: <strong>{vid_count}</strong>
             </p>
         </div>""", unsafe_allow_html=True)
 
+# ── FOOTER ───────────────────────────────────────────────────
 st.markdown("---")
 st.markdown(
-    "<p style='color:#A8C9E8; text-align:center; font-size:0.8em;'>"
-    "DREMEL Trend Intelligence System · Digital & Social Media Marketing · "
+    "<p style='color:#94A3B8; text-align:center; font-size:0.78em;'>"
+    "DREMEL Trend Intelligence System &nbsp;·&nbsp; Digital & Social Media Marketing &nbsp;·&nbsp; "
     f"Data refreshed: {datetime.now().strftime('%d %b %Y %H:%M')}</p>",
     unsafe_allow_html=True
 )
