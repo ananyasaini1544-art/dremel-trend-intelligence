@@ -1554,6 +1554,16 @@ with tab8:
     </div>
     <hr class='section-divider'>
     """, unsafe_allow_html=True)
+    st.markdown("""
+        <div style='background:#FFF8F5;border-radius:8px;padding:14px 20px;
+             margin-bottom:16px;border-left:4px solid #E8681A;'>
+            <p style='color:#E8681A;font-weight:700;margin:0;font-size:0.95em;'>
+                Key Finding: Dremel has ZERO presence in top trending UK DIY searches</p>
+            <p style='color:#5A6473;margin:6px 0 0 0;font-size:0.85em;'>
+                Competitors average 41M views per video while Dremel does not appear 
+                in any trending topic search results — confirming the content gap problem.</p>
+        </div>
+        """, unsafe_allow_html=True)
 
     dremel_videos     = df[df["is_dremel"] == True]
     competitor_videos = df[df["is_dremel"] == False]
