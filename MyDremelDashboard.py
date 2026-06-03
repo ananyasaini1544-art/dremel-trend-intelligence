@@ -642,28 +642,7 @@ def premium_chart(figsize=(7, 4.5)):
     ax.set_axisbelow(True)
     return fig, ax
 
-@st.cache_data(ttl=21600)
-def auto_generate_keywords():
-    base_terms = ["DIY UK", "dremel", "rotary tool", "furniture flip", "home craft UK"]
-    all_keywords = []
-    for term in base_terms:
-        try:
-            url = f"https://suggestqueries.google.com/complete/search?client=youtube&ds=yt&q={term}&hl=en"
-            r = requests.get(url, timeout=5)
-            suggestions = r.json()[1]
-            for s in suggestions[:3]:
-                if len(s[0]) > 3:
-                    all_keywords.append(s[0])
-        except:
-            continue
-    # Remove duplicates and limit to 15
-    seen = set()
-    unique = []
-    for kw in all_keywords:
-        if kw.lower() not in seen:
-            seen.add(kw.lower())
-            unique.append(kw)
-    return unique[:15] if unique else KEYWORDS
+def clean_label(kw): return KEYWORD_LABELS.get(kw, kw)
 def is_dremel(ch): return any(d.lower() in str(ch).lower() for d in ["dremel", "dremel europe", "dremel tools"])
 def calc_score(v, l, c): return round(((l + c*2)/max(v,1)*100)*0.6 + min(v/100000,10)*0.4, 2)
 def should_refresh():
@@ -738,116 +717,7 @@ def get_trends(kw):
     except: return {"current":50,"growth":0,"peak":50}
 
 # ── GEMINI ────────────────────────────────────────────────────
-def generate_video_script(trend, product, hook, idea):
-    try:
-        from groq import Groq
-        client = Groq(api_key=os.getenv("GROQ_API_KEY", ""))
-        response = client.chat.completions.create(
-            model="llama-3.3-70b-versatile",
-            messages=[{
-                "role": "user",
-                "content": f"""
-Write a complete 60-second YouTube video script for Dremel UK.
-Topic: {trend}
-Product: {product}
-Hook: {hook}
-Video idea: {idea}
-
-Return the script in this exact format:
-HOOK (0-5 sec): [Opening line to grab attention]
-PROBLEM (5-15 sec): [Identify the viewer's problem or desire]
-SOLUTION (15-35 sec): [Show how Dremel {product} solves it - step by step]
-DEMO (35-50 sec): [Specific actions to show on camera]
-CTA (50-60 sec): [Call to action - what to do next]
-CAPTION: [One line caption for the video post]
-"""
-            }],
-            max_tokens=600,
-            temperature=0.7
-        )
-        result = {}
-        for line in response.choices[0].message.content.strip().split("\n"):
-            if ":" in line:
-                k, _, v = line.partition(":")
-                result[k.strip()] = v.strip()
-        return result if result else None
-    except Exception as e:
-        return None
-    try:
-        from groq import Groq
-        client = Groq(api_key=os.getenv("GROQ_API_KEY", ""))
-        response = client.chat.completions.create(
-            model="llama-3.3-70b-versatile",
-            messages=[{
-                "role": "user",
-                "content": f"""
-You are a senior digital marketing strategist for Dremel UK, a professional DIY tools brand.
-LIVE DATA: Trend={trend}, UK Growth={growth}%, Score={score}, Product={product}, Role={role}
-Generate a specific actionable content brief. Return EXACTLY this format only, no extra text:
-HOOK: [Punchy opening line max 15 words]
-PLATFORM: [Best platforms to post on]
-FORMAT: [Exact content format e.g. 60-sec Reel]
-CTA: [Specific call to action]
-POST_TIME: [Best day and UK time to post]
-HASHTAGS: [5-7 relevant UK DIY hashtags]
-IDEA_1: [Specific video title idea]
-IDEA_2: [Second video title idea]
-IDEA_3: [Third video title idea]
-INSIGHT: [One strategic marketing insight max 20 words]
-"""
-            }],
-            max_tokens=600,
-            temperature=0.7
-        )
-        result = {}
-        for line in response.choices[0].message.content.strip().split("\n"):
-            if ":" in line:
-                k, _, v = line.partition(":")
-                result[k.strip()] = v.strip()
-        return result if result else None
-    except Exception as e:
-        st.error(f"AI error: {e}")
-        return None
-    try:
-        import google.generativeai as genai
-        genai.configure(api_key=GEMINI_API_KEY)
-        model = genai.GenerativeModel("gemini-2.0-flash")
-
-        # Auto retry up to 3 times with wait
-        for attempt in range(3):
-            try:
-                resp = model.generate_content(f"""
-You are a senior digital marketing strategist for Dremel UK.
-LIVE DATA: Trend={trend}, UK Growth={growth}%, Score={score}, Product={product}, Role={role}
-Generate an actionable content brief. Return EXACTLY this format, no extra text:
-HOOK: [Punchy opening line max 15 words]
-PLATFORM: [Best platforms]
-FORMAT: [Exact content format]
-CTA: [Specific call to action]
-POST_TIME: [Best UK time to post]
-HASHTAGS: [5-7 UK DIY hashtags]
-IDEA_1: [Specific video idea]
-IDEA_2: [Another video idea]
-IDEA_3: [Another video idea]
-INSIGHT: [Sharp marketing insight max 20 words]
-""")
-                result = {}
-                for line in resp.text.strip().split("\n"):
-                    if ":" in line:
-                        k, _, v = line.partition(":")
-                        result[k.strip()] = v.strip()
-                return result if result else None
-
-            except Exception as e:
-                if "429" in str(e) and attempt < 2:
-                    st.warning(f"Rate limit hit — waiting 60 seconds before retry {attempt + 2}/3...")
-                    time.sleep(60)
-                else:
-                    raise e
-
-    except Exception as e:
-        st.error(f"Gemini error: {e}")
-        return None
+def generate_ai_brief(trend, role, product, score, growth):
     try:
         import google.generativeai as genai
         genai.configure(api_key=GEMINI_API_KEY)
@@ -1008,18 +878,7 @@ if run_scrape or auto_ref or not glob.glob("dremel_multi_*.csv"):
     st.success(f"Intelligence update complete — {len(df)} videos analysed from YouTube UK.")
 else:
     files = glob.glob("dremel_multi_*.csv")
-    if files:
-        try:
-            try:
-                df = pd.read_csv(max(files, key=os.path.getctime))
-                if len(df) == 0:
-                    df = None
-            except:
-                df = None
-            if df.empty:
-                df = None
-        except:
-            df = None
+    if files: df = pd.read_csv(max(files, key=os.path.getctime))
 
 if df is None or len(df) == 0:
     st.warning("No data loaded. Click Refresh in the sidebar to begin scraping.")
@@ -1145,9 +1004,9 @@ with tab2:
     td=[]; gp2=st.progress(0); kf=selected_keywords[:6]
     for i,kw in enumerate(kf):
         gp2.progress((i+1)/len(kf))
-        gt_result=get_trends(kw)
-        td.append({"Keyword":kw,"Search Score":gt_result["current"],"Growth %":gt_result["growth"],"Peak":gt_result["peak"]})
-        time.sleep(3)
+        gt=get_trends(kw)
+        td.append({"Keyword":clean_label(kw),"Search Score":gt["current"],"Growth %":gt["growth"],"Peak":gt["peak"]})
+        time.sleep(1)
     gp2.empty()
     gt_df = pd.DataFrame(td).sort_values("Growth %", ascending=False)
 
@@ -1204,7 +1063,7 @@ with tab3:
             st.markdown(f"""
             <div class='analytics-card' style='padding:14px 18px;margin-bottom:8px;'>
                 <div style='display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;'>
-                    <p style='font-weight:700;color:#0B1B3E;font-size:0.88em;margin:0;'>{kw}</p>
+                    <p style='font-weight:700;color:#0B1B3E;font-size:0.88em;margin:0;'>{clean_label(kw)}</p>
                     <span style='font-size:0.72em;color:#9CA3B0;'>{n} comments analysed</span>
                 </div>
                 <div style='height:6px;border-radius:3px;overflow:hidden;background:#F0F2F5;display:flex;gap:1px;margin-bottom:8px;'>
@@ -1347,8 +1206,8 @@ with tab6:
     st.markdown(f"""
     <div class='section-header-block'>
         <p class='section-eyebrow'>AI Recommendations</p>
-        <p class='section-title'>Content Ideation Centre &nbsp;<span class='pill pill-green' style='font-size:0.55em;vertical-align:middle;'>GROQ AI LIVE</span></p>
-        <p class='section-subtitle'>AI-powered content briefs — hooks, CTAs, platforms, formats, video ideas generated by Groq AI</p>
+        <p class='section-title'>Content Ideation Centre &nbsp;<span class='pill pill-green' style='font-size:0.55em;vertical-align:middle;'>GEMINI AI LIVE</span></p>
+        <p class='section-subtitle'>AI-powered content briefs — hooks, CTAs, platforms, formats, video ideas generated by Google Gemini</p>
     </div>
     <hr class='section-divider'>
     """, unsafe_allow_html=True)
@@ -1372,11 +1231,10 @@ with tab6:
         sv=round(tr["avg_score"],2)
         rkw=next((k for k,v in KEYWORD_LABELS.items() if v==sel_trend), sel_trend)
 
-        with st.spinner("Groq AI is generating your strategic brief..."):
-            gtd = get_trends(rkw)
-            grw = gtd["growth"]
-            aib = generate_ai_brief(sel_trend, sel_role, sel_product, sv, grw)
-            
+        with st.spinner("Gemini AI is generating your strategic brief..."):
+            gtd=get_trends(rkw); grw=gtd["growth"]
+            aib=generate_ai_brief(sel_trend,sel_role,sel_product,sv,grw)
+
         st.markdown("<hr>", unsafe_allow_html=True)
         st.markdown(f"""
         <div class='insight-panel' style='margin-bottom:20px;'>
@@ -1398,31 +1256,6 @@ with tab6:
             for lbl,val in bi[half:]:
                 cb2.markdown(f"<div class='brief-card'><span class='brief-tag'>{lbl}</span><p class='brief-text'>{val}</p></div>", unsafe_allow_html=True)
 
-            st.markdown("<hr>", unsafe_allow_html=True)
-            st.markdown(
-                "<p style='font-weight:700;color:#0B1B3E;font-size:0.92em;margin-bottom:12px;'>Auto-Generated 60-Second Video Script</p>",
-                unsafe_allow_html=True)
-
-            if idls:
-                with st.spinner("Generating 60-second video script..."):
-                    hook_text = aib.get("HOOK", f"Watch this {sel_trend} transformation")
-                    script = generate_video_script(sel_trend, sel_product, hook_text, idls[0])
-
-                if script:
-                    script_keys = ["HOOK (0-5 sec)", "PROBLEM (5-15 sec)", "SOLUTION (15-35 sec)",
-                                   "DEMO (35-50 sec)", "CTA (50-60 sec)", "CAPTION"]
-                    for sk in script_keys:
-                        val = script.get(sk, "")
-                        if val:
-                            color = {"HOOK (0-5 sec)": "#E8681A", "CTA (50-60 sec)": "#10B981",
-                                     "CAPTION": "#1B3A6B"}.get(sk, "#0B1B3E")
-                            st.markdown(f"""
-                            <div class='brief-card' style='border-left:4px solid {color};'>
-                                <span class='brief-tag' style='background:{color};'>{sk}</span>
-                                <p class='brief-text'>{val}</p>
-                            </div>""", unsafe_allow_html=True)
-                else:
-                    st.warning("Script generation failed — try again in a moment.")
             st.markdown("<hr>", unsafe_allow_html=True)
             st.markdown("<p style='font-weight:700;color:#0B1B3E;font-size:0.92em;margin-bottom:12px;'>Content Ideas</p>", unsafe_allow_html=True)
             ic1,ic2,ic3=st.columns(3)
