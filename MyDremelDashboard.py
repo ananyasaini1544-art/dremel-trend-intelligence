@@ -1066,14 +1066,6 @@ tab1,tab2,tab3,tab4,tab5,tab6,tab7,tab8 = st.tabs([
     "AI Ideation & Briefs",
     "Roadmap",
     "Dremel Diagnosis"
-])([
-    "Trend Leaderboard",
-    "Google Trends UK",
-    "Audience Sentiment",
-    "Gap Analysis",
-    "YouTube Insights",
-    "AI Ideation & Briefs",
-    "Roadmap"
 ])
 
 # ── TAB 1 — TREND LEADERBOARD ────────────────────────────────
