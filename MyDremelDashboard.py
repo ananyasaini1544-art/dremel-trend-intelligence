@@ -36,14 +36,14 @@ COMMENTS_URL    = "https://www.googleapis.com/youtube/v3/commentThreads"
 # ════════════════════════════════════════════════════════════
 st.markdown("""
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Outfit:wght@400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Barlow+Condensed:wght@500;600;700;800&display=swap');
 
 /* ── Design Tokens — Dremel Official Brand Colors ── */
 :root {
     --dremel-navy:      #1A4C96;
     --dremel-blue:      #1A4C96;
-    --dremel-accent:    #1A4C96;
-    --dremel-accent-lt: #2A5EAF;
+    --dremel-accent:    #E8681A;
+    --dremel-accent-lt: #F07830;
     --dremel-orange:    #E8681A;
     --dremel-white:     #FFFFFF;
     --dremel-offwhite:  #F5F7FA;
@@ -64,9 +64,9 @@ st.markdown("""
 
 /* ── Global Reset ── */
 html, body, .stApp {
-    background-color: var(--dremel-offwhite) !important;
-    font-family: 'Plus Jakarta Sans', sans-serif !important;
-    color: var(--dremel-gray-800) !important;
+    background-color: #F5F7FA !important;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
+    color: #1E2330 !important;
 }
 .main .block-container {
     padding-top: 0 !important;
@@ -87,7 +87,7 @@ html, body, .stApp {
     color: white !important;
     border: none !important;
     border-radius: var(--radius-sm) !important;
-    font-family: 'Plus Jakarta Sans', sans-serif !important;
+    font-family: 'Inter', sans-serif !important;
     font-weight: 600 !important;
     font-size: 0.82em !important;
     letter-spacing: 0.8px !important;
@@ -109,13 +109,15 @@ html, body, .stApp {
     border-bottom: 1px solid rgba(255,255,255,0.07);
 }
 .sb-logo {
-    font-family: 'Outfit', sans-serif;
-    font-size: 1.9em;
+    font-family: 'Barlow Condensed', 'Inter', sans-serif;
+    font-size: 2em;
     font-weight: 800;
     color: #FFFFFF;
-    letter-spacing: 5px;
+    letter-spacing: 6px;
     line-height: 1;
     margin: 0 0 4px 0;
+    white-space: nowrap;
+    text-transform: uppercase;
 }
 .sb-logo-accent { color: var(--dremel-accent); }
 .sb-tagline {
@@ -180,23 +182,25 @@ html, body, .stApp {
     border-radius: 50%;
 }
 .header-logo {
-    font-family: 'Outfit', sans-serif;
-    font-size: 1.6em;
+    font-family: 'Barlow Condensed', 'Inter', sans-serif;
+    font-size: 1.7em;
     font-weight: 800;
     color: #FFFFFF;
     letter-spacing: 6px;
     text-transform: uppercase;
     z-index: 1;
+    white-space: nowrap;
 }
-.header-logo-accent { color: var(--dremel-accent); }
+.header-logo-accent { color: #FFFFFF; }
 .header-subtitle {
-    font-size: 0.72em;
+    font-size: 0.7em;
     font-weight: 400;
-    color: rgba(255,255,255,0.45);
-    letter-spacing: 2px;
+    color: rgba(255,255,255,0.5);
+    letter-spacing: 2.5px;
     text-transform: uppercase;
-    margin-left: 20px;
+    margin-left: 24px;
     z-index: 1;
+    font-family: 'Inter', sans-serif;
 }
 .header-right {
     display: flex;
@@ -234,7 +238,7 @@ html, body, .stApp {
     box-shadow: var(--shadow-md);
 }
 .hero-strip-title {
-    font-family: 'Outfit', sans-serif;
+    font-family: 'Barlow Condensed', 'Inter', sans-serif;
     font-size: 1.15em;
     font-weight: 700;
     color: var(--dremel-navy);
@@ -263,51 +267,40 @@ html, body, .stApp {
 
 /* ── KPI Cards ── */
 .kpi-card {
-    background: var(--dremel-white);
-    border-radius: var(--radius-lg);
-    padding: 20px 18px 16px;
-    box-shadow: var(--shadow-sm);
-    border: 1px solid var(--dremel-gray-200);
+    background: #FFFFFF;
+    border-radius: 8px;
+    padding: 22px 18px 18px;
+    box-shadow: 0 1px 4px rgba(26,76,150,0.08);
+    border: 1px solid #E1E5EB;
+    border-top: 4px solid #1A4C96;
     position: relative;
     overflow: hidden;
-    transition: box-shadow 0.2s, transform 0.2s;
+    transition: box-shadow 0.25s ease, transform 0.25s ease;
 }
 .kpi-card:hover {
-    box-shadow: var(--shadow-md);
-    transform: translateY(-1px);
+    box-shadow: 0 4px 16px rgba(26,76,150,0.12);
+    transform: translateY(-2px);
 }
 .kpi-card-accent {
-    position: absolute;
-    top: 0; left: 0; right: 0;
-    height: 3px;
-    background: linear-gradient(90deg, var(--dremel-accent), var(--dremel-accent-lt));
-}
-.kpi-card-icon {
-    width: 36px; height: 36px;
-    background: linear-gradient(135deg, #FFF3EC, #FFE6D5);
-    border-radius: 8px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.1em;
-    margin-bottom: 12px;
+    display: none;
 }
 .kpi-value {
-    font-family: 'Outfit', sans-serif;
-    font-size: 2em;
+    font-family: 'Barlow Condensed', 'Inter', sans-serif;
+    font-size: 2.1em;
     font-weight: 800;
-    color: var(--dremel-navy);
+    color: #1A4C96;
     margin: 0;
     line-height: 1;
     letter-spacing: -0.5px;
 }
 .kpi-label {
-    font-size: 0.72em;
+    font-size: 0.68em;
     font-weight: 600;
-    color: var(--dremel-gray-400);
+    color: #9CA3B0;
     text-transform: uppercase;
-    letter-spacing: 1px;
-    margin: 6px 0 0 0;
+    letter-spacing: 1.2px;
+    margin: 8px 0 0 0;
+    font-family: 'Inter', sans-serif;
 }
 
 /* ── Section Headers ── */
@@ -323,7 +316,7 @@ html, body, .stApp {
     margin: 0 0 4px 0;
 }
 .section-title {
-    font-family: 'Outfit', sans-serif;
+    font-family: 'Barlow Condensed', 'Inter', sans-serif;
     font-size: 1.3em;
     font-weight: 700;
     color: var(--dremel-navy);
@@ -402,15 +395,16 @@ html, body, .stApp {
 }
 .brief-tag {
     display: inline-block;
-    background: var(--dremel-navy);
-    color: var(--dremel-accent);
-    padding: 2px 10px;
-    border-radius: 4px;
-    font-size: 0.62em;
+    background: #1A4C96;
+    color: #FFFFFF !important;
+    padding: 3px 12px;
+    border-radius: 3px;
+    font-size: 0.65em;
     font-weight: 700;
-    letter-spacing: 2px;
+    letter-spacing: 1.5px;
     text-transform: uppercase;
     margin-bottom: 7px;
+    font-family: 'Inter', sans-serif;
 }
 .brief-text {
     color: var(--dremel-gray-800);
@@ -516,7 +510,7 @@ html, body, .stApp {
     margin: 0 0 8px 0;
 }
 .insight-title {
-    font-family: 'Outfit', sans-serif;
+    font-family: 'Barlow Condensed', 'Inter', sans-serif;
     font-size: 1.2em;
     font-weight: 700;
     color: #FFFFFF;
@@ -526,25 +520,32 @@ html, body, .stApp {
 
 /* ── Tabs ── */
 .stTabs [data-baseweb="tab-list"] {
-    background: var(--dremel-white) !important;
-    border-radius: var(--radius-md) !important;
-    padding: 4px !important;
-    border: 1px solid var(--dremel-gray-200) !important;
-    gap: 2px !important;
-    box-shadow: var(--shadow-sm) !important;
+    background: #FFFFFF !important;
+    border-radius: 8px !important;
+    padding: 5px !important;
+    border: 1px solid #E1E5EB !important;
+    gap: 3px !important;
+    box-shadow: 0 1px 4px rgba(26,76,150,0.06) !important;
 }
 .stTabs [data-baseweb="tab"] {
-    color: var(--dremel-gray-600) !important;
-    font-family: 'Plus Jakarta Sans', sans-serif !important;
-    font-weight: 600 !important;
+    color: #5A6473 !important;
+    font-family: 'Inter', sans-serif !important;
+    font-weight: 500 !important;
     font-size: 0.82em !important;
-    border-radius: 7px !important;
-    padding: 8px 14px !important;
-    letter-spacing: 0.2px !important;
+    border-radius: 6px !important;
+    padding: 9px 16px !important;
+    letter-spacing: 0.3px !important;
+    transition: all 0.2s ease !important;
+}
+.stTabs [data-baseweb="tab"]:hover {
+    background: #F0F2F5 !important;
+    color: #1A4C96 !important;
 }
 .stTabs [aria-selected="true"] {
-    background: var(--dremel-navy) !important;
-    color: white !important;
+    background: #1A4C96 !important;
+    color: #FFFFFF !important;
+    font-weight: 600 !important;
+    box-shadow: 0 2px 6px rgba(26,76,150,0.25) !important;
 }
 
 /* ── Metrics ── */
@@ -579,15 +580,34 @@ hr { border-color: var(--dremel-gray-200) !important; }
     margin-top: 16px;
 }
 .footer-logo {
-    font-family: 'Outfit', sans-serif;
-    font-size: 1.1em;
+    font-family: 'Barlow Condensed', 'Inter', sans-serif;
+    font-size: 1.2em;
     font-weight: 800;
     color: #FFFFFF;
-    letter-spacing: 4px;
+    letter-spacing: 5px;
+    text-transform: uppercase;
 }
-.footer-logo span { color: var(--dremel-accent); }
-.footer-meta { color: rgba(255,255,255,0.35); font-size: 0.72em; text-align: right; }
-.footer-powered { color: rgba(255,255,255,0.5); font-size: 0.72em; margin-top: 4px; }
+.footer-logo span { color: #FFFFFF; }
+.footer-meta { color: rgba(255,255,255,0.4); font-size: 0.72em; text-align: right; font-family: 'Inter', sans-serif; }
+.footer-powered { color: rgba(255,255,255,0.35); font-size: 0.7em; margin-top: 4px; font-family: 'Inter', sans-serif; }
+
+/* ── Section titles ── */
+.section-title {
+    font-family: 'Inter', sans-serif !important;
+    font-weight: 700 !important;
+    color: #1E2330 !important;
+    letter-spacing: -0.3px !important;
+}
+.section-eyebrow {
+    font-family: 'Inter', sans-serif !important;
+    font-weight: 600 !important;
+    color: #1A4C96 !important;
+}
+
+/* ── Remove default Streamlit header ── */
+header[data-testid="stHeader"] { display: none !important; }
+#MainMenu { display: none !important; }
+footer { display: none !important; }
 </style>
 """, unsafe_allow_html=True)
 
@@ -849,7 +869,7 @@ def scrape_all(keywords, prog, status):
 with st.sidebar:
     st.markdown("""
     <div class='sb-logo-block'>
-        <div class='sb-logo'>DRE<span class='sb-logo-accent'>MEL</span></div>
+        <div class='sb-logo'>DREMEL</div>
         <p class='sb-tagline'>Intelligence Platform</p>
     </div>
     """, unsafe_allow_html=True)
@@ -903,7 +923,7 @@ now_str  = datetime.now().strftime("%d %b %Y  %H:%M")
 st.markdown(f"""
 <div class='top-header'>
     <div style='display:flex;align-items:center;gap:0;z-index:1;'>
-        <span class='header-logo'>DRE<span class='header-logo-accent'>MEL</span></span>
+        <span class='header-logo'>DREMEL</span>
         <span class='header-subtitle'>UK DIY Trend Intelligence Platform</span>
     </div>
     <div class='header-right'>
@@ -917,10 +937,10 @@ st.markdown(f"""
         <p class='hero-strip-sub'>Automated UK DIY trend detection · YouTube scraping · NLP sentiment · AI content recommendations</p>
     </div>
     <div style='display:flex;gap:8px;flex-wrap:wrap;'>
-        <span class='hero-pill'>🎯 YouTube UK</span>
-        <span class='hero-pill'>📈 Google Trends</span>
-        <span class='hero-pill'>🤖 Groq AI</span>
-        <span class='hero-pill'>💬 VADER NLP</span>
+        <span class='hero-pill'>YouTube UK</span>
+        <span class='hero-pill'>Google Trends</span>
+        <span class='hero-pill'>Groq AI</span>
+        <span class='hero-pill'>VADER NLP</span>
     </div>
 </div>
 """, unsafe_allow_html=True)
@@ -968,17 +988,16 @@ gp = len(leaderboard[~leaderboard["dremel_present"]])
 
 k1,k2,k3,k4,k5 = st.columns(5)
 kpi_data = [
-    ("🔥", tt, "Top Trending Topic"),
-    ("👁️", f"{pv//1_000_000}M+", "Peak Avg Views"),
-    ("⚠️", f"{gp}/{len(leaderboard)}", "Content Gaps"),
-    ("📹", str(len(df)), "Videos Analysed"),
-    ("🌐", "4 Sources", "Real Data Sources"),
+    (tt,        "Top Trending Topic"),
+    (f"{pv//1_000_000}M+", "Peak Avg Views"),
+    (f"{gp}/{len(leaderboard)}", "Content Gaps"),
+    (str(len(df)), "Videos Analysed"),
+    ("4",       "Real Data Sources"),
 ]
-for col, (icon, val, lbl) in zip([k1,k2,k3,k4,k5], kpi_data):
+for col, (val, lbl) in zip([k1,k2,k3,k4,k5], kpi_data):
     col.markdown(f"""
     <div class='kpi-card'>
         <div class='kpi-card-accent'></div>
-        <div class='kpi-card-icon'>{icon}</div>
         <p class='kpi-value'>{val}</p>
         <p class='kpi-label'>{lbl}</p>
     </div>
@@ -990,13 +1009,13 @@ st.markdown("<div style='height:8px;'></div>", unsafe_allow_html=True)
 #  TABS
 # ════════════════════════════════════════════════════════════
 tab1,tab2,tab3,tab4,tab5,tab6,tab7 = st.tabs([
-    "📊  Trend Leaderboard",
-    "📈  Google Trends UK",
-    "💬  Audience Sentiment",
-    "🔴  Gap Analysis",
-    "🎬  YouTube Insights",
-    "💡  AI Ideation & Briefs",
-    "🗺️  Roadmap"
+    "Trend Leaderboard",
+    "Google Trends UK",
+    "Audience Sentiment",
+    "Gap Analysis",
+    "YouTube Insights",
+    "AI Ideation & Briefs",
+    "Roadmap"
 ])
 
 # ── TAB 1 — TREND LEADERBOARD ────────────────────────────────
@@ -1154,15 +1173,15 @@ with tab3:
         <div class='analytics-card' style='margin-top:12px;'>
             <div style='display:flex;justify-content:space-between;margin-bottom:14px;'>
                 <div style='text-align:center;'>
-                    <p style='font-family:Outfit,sans-serif;font-size:2em;font-weight:800;color:{GREEN};margin:0;'>{ap}%</p>
+                    <p style='font-family:'Barlow Condensed','Inter',sans-serif;font-size:2em;font-weight:800;color:{GREEN};margin:0;'>{ap}%</p>
                     <p style='font-size:0.72em;font-weight:600;color:#9CA3B0;text-transform:uppercase;letter-spacing:1px;margin:4px 0 0 0;'>Positive</p>
                 </div>
                 <div style='text-align:center;'>
-                    <p style='font-family:Outfit,sans-serif;font-size:2em;font-weight:800;color:#4A6CF7;margin:0;'>{au}%</p>
+                    <p style='font-family:'Barlow Condensed','Inter',sans-serif;font-size:2em;font-weight:800;color:#4A6CF7;margin:0;'>{au}%</p>
                     <p style='font-size:0.72em;font-weight:600;color:#9CA3B0;text-transform:uppercase;letter-spacing:1px;margin:4px 0 0 0;'>Neutral</p>
                 </div>
                 <div style='text-align:center;'>
-                    <p style='font-family:Outfit,sans-serif;font-size:2em;font-weight:800;color:{ACCENT};margin:0;'>{an}%</p>
+                    <p style='font-family:'Barlow Condensed','Inter',sans-serif;font-size:2em;font-weight:800;color:{ACCENT};margin:0;'>{an}%</p>
                     <p style='font-size:0.72em;font-weight:600;color:#9CA3B0;text-transform:uppercase;letter-spacing:1px;margin:4px 0 0 0;'>Negative</p>
                 </div>
             </div>
@@ -1374,7 +1393,7 @@ with tab6:
             </div>""", unsafe_allow_html=True)
 
             script_keys = ["SCRIPT_HOOK","SCRIPT_BODY","SCRIPT_CTA"]
-            script_labels = {"SCRIPT_HOOK":"🎬 Hook (0–5 sec)","SCRIPT_BODY":"🎙️ Body (5–50 sec)","SCRIPT_CTA":"📣 Call to Action (50–60 sec)"}
+            script_labels = {"SCRIPT_HOOK":"Hook (0–5 sec)","SCRIPT_BODY":"Body (5–50 sec)","SCRIPT_CTA":"Call to Action (50–60 sec)"}
             script_colors = {"SCRIPT_HOOK":"#E8681A","SCRIPT_BODY":"#1A4C96","SCRIPT_CTA":"#28A745"}
 
             for k in script_keys:
@@ -1479,7 +1498,7 @@ with tab7:
 st.markdown(f"""
 <div class='platform-footer'>
     <div>
-        <div class='footer-logo'>DRE<span>MEL</span></div>
+        <div class='footer-logo'>DREMEL</div>
         <p class='footer-powered'>UK DIY Trend Intelligence Platform</p>
     </div>
     <div class='footer-meta'>
