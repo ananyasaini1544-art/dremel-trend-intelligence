@@ -100,9 +100,11 @@ html, body, .stApp {
 }
 .main .block-container {
     padding-top: 0 !important;
+    padding-bottom: 0 !important;
     padding-left: 2rem !important;
     padding-right: 2rem !important;
     max-width: 100% !important;
+    margin-top: -60px !important;
 }
 
 /* ── Sidebar ── */
