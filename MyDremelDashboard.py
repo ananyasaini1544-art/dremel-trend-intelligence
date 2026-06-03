@@ -981,7 +981,7 @@ st.markdown(f"""
 <div class='hero-strip'>
     <div>
         <p class='hero-strip-title'>Market Trend Intelligence Dashboard</p>
-        <p class='hero-strip-sub'>Automated UK DIY trend detection · YouTube scraping · NLP sentiment · AI content recommendations</p>
+        <p class='hero-strip-sub'>Automated trend detection system for Dremel UK · Scrapes YouTube · Analyses sentiment · Generates role-specific UGC content briefs</p>
     </div>
     <div style='display:flex;gap:8px;flex-wrap:wrap;'>
         <span class='hero-pill'>YouTube UK</span>
