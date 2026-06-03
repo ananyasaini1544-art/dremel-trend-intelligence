@@ -926,17 +926,10 @@ with st.sidebar:
 
     st.markdown("<span class='sb-section-label'>Data Filters</span>", unsafe_allow_html=True)
     st.markdown("<div style='padding:0 0 0 0;'>", unsafe_allow_html=True)
-    with st.spinner("Auto-generating keywords..."):
-        auto_kws = auto_generate_keywords()
-        all_kws = list(set(KEYWORDS + auto_kws))
-
     selected_keywords = st.multiselect(
-        "Keywords to Monitor", all_kws, default=all_kws[:10],
+        "Keywords to Monitor", KEYWORDS, default=KEYWORDS,
         label_visibility="visible", key="kw_main"
     )
-    st.markdown(
-        f"<p style='font-size:0.68em;color:rgba(255,255,255,0.4);padding:0;margin:0;'>⚡ {len(auto_kws)} keywords auto-generated from YouTube</p>",
-        unsafe_allow_html=True)
     age_filter = st.selectbox(
         "Audience Age Segment", ["All Ages"] + list(AGE_SEGMENTS.keys()),
         label_visibility="visible", key="age_main"
