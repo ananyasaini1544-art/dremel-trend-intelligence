@@ -1372,10 +1372,11 @@ with tab6:
         sv=round(tr["avg_score"],2)
         rkw=next((k for k,v in KEYWORD_LABELS.items() if v==sel_trend), sel_trend)
 
-        with st.spinner("Gemini AI is generating your strategic brief..."):
-            gtd=get_trends(rkw); grw=gtd["growth"]
-            aib=generate_ai_brief(sel_trend,sel_role,sel_product,sv,grw)
-
+        with st.spinner("Groq AI is generating your strategic brief..."):
+            gtd = get_trends(rkw)
+            grw = gtd["growth"]
+            aib = generate_ai_brief(sel_trend, sel_role, sel_product, sv, grw)
+            
         st.markdown("<hr>", unsafe_allow_html=True)
         st.markdown(f"""
         <div class='insight-panel' style='margin-bottom:20px;'>
