@@ -38,26 +38,27 @@ st.markdown("""
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Outfit:wght@400;500;600;700;800&display=swap');
 
-/* ── Design Tokens ── */
+/* ── Design Tokens — Dremel Official Brand Colors ── */
 :root {
-    --dremel-navy:      #0B1B3E;
-    --dremel-blue:      #1B3A6B;
-    --dremel-accent:    #E8681A;
-    --dremel-accent-lt: #F5832A;
+    --dremel-navy:      #1A4C96;
+    --dremel-blue:      #1A4C96;
+    --dremel-accent:    #1A4C96;
+    --dremel-accent-lt: #2A5EAF;
+    --dremel-orange:    #E8681A;
     --dremel-white:     #FFFFFF;
-    --dremel-offwhite:  #F7F8FA;
+    --dremel-offwhite:  #F5F7FA;
     --dremel-gray-100:  #F0F2F5;
-    --dremel-gray-200:  #E4E7ED;
+    --dremel-gray-200:  #E1E5EB;
     --dremel-gray-400:  #9CA3B0;
-    --dremel-gray-600:  #6B7280;
-    --dremel-gray-800:  #2D3748;
-    --dremel-green:     #10B981;
-    --dremel-red:       #EF4444;
-    --shadow-sm:        0 1px 3px rgba(11,27,62,0.08), 0 1px 2px rgba(11,27,62,0.04);
-    --shadow-md:        0 4px 16px rgba(11,27,62,0.10), 0 2px 6px rgba(11,27,62,0.06);
-    --shadow-lg:        0 8px 32px rgba(11,27,62,0.12), 0 4px 12px rgba(11,27,62,0.08);
-    --radius-sm:        6px;
-    --radius-md:        10px;
+    --dremel-gray-600:  #5A6473;
+    --dremel-gray-800:  #1E2330;
+    --dremel-green:     #28A745;
+    --dremel-red:       #DC3545;
+    --shadow-sm:        0 1px 3px rgba(26,76,150,0.08), 0 1px 2px rgba(26,76,150,0.04);
+    --shadow-md:        0 4px 16px rgba(26,76,150,0.10), 0 2px 6px rgba(26,76,150,0.06);
+    --shadow-lg:        0 8px 32px rgba(26,76,150,0.12), 0 4px 12px rgba(26,76,150,0.08);
+    --radius-sm:        4px;
+    --radius-md:        8px;
     --radius-lg:        14px;
 }
 
@@ -628,8 +629,8 @@ NEXT_ACTIONS = [
 ]
 
 # ── CHART THEME ───────────────────────────────────────────────
-NAVY   = "#0B1B3E"; BLUE = "#1B3A6B"; ACCENT = "#E8681A"
-GREEN  = "#10B981"; RED  = "#EF4444"; GRAY   = "#9CA3B0"
+NAVY   = "#1A4C96"; BLUE = "#1A4C96"; ACCENT = "#E8681A"
+GREEN  = "#28A745"; RED  = "#DC3545"; GRAY   = "#9CA3B0"
 C_BG   = "#FFFFFF"; C_SURF = "#F7F8FA"
 
 def premium_chart(figsize=(7, 4.5)):
@@ -716,7 +717,7 @@ def get_trends(kw):
         return {"current":int(cur),"growth":round(((cur-prev)/max(prev,1))*100,1),"peak":int(max(vals))}
     except: return {"current":50,"growth":0,"peak":50}
 
-# ── GROQ AI ────────────────────────────────────────────────────
+# ── GROQ AI — FULL UGC + MARKETING BRIEF ──────────────────────
 def generate_ai_brief(trend, role, product, score, growth):
     try:
         from groq import Groq
@@ -725,22 +726,47 @@ def generate_ai_brief(trend, role, product, score, growth):
             model="llama-3.3-70b-versatile",
             messages=[{
                 "role": "user",
-                "content": f"""You are a senior digital marketing strategist for Dremel UK, a professional DIY tools brand.
-LIVE DATA: Trend={trend}, Score={score}, Product={product}, Role={role}
-Generate a specific actionable content brief. Return EXACTLY this format, no extra text:
-HOOK: [Punchy opening line max 15 words]
-PLATFORM: [Best platforms to post on]
-FORMAT: [Exact content format e.g. 60-sec Reel]
-CTA: [Specific call to action]
-POST_TIME: [Best day and UK time to post]
-HASHTAGS: [5-7 relevant UK DIY hashtags]
-IDEA_1: [Specific video title idea]
-IDEA_2: [Second video title idea]
-IDEA_3: [Third video title idea]
-INSIGHT: [One strategic marketing insight max 20 words]"""
+                "content": f"""You are a world-class digital marketing strategist and UGC content director for DREMEL UK — a premium DIY rotary tools brand targeting the UK market.
+
+LIVE TREND INTELLIGENCE:
+- Trending Topic: {trend}
+- YouTube Engagement Score: {score}
+- Dremel Product to Feature: {product}
+- Marketing Role Receiving This Brief: {role}
+
+YOUR TASK:
+Generate a comprehensive, professional UGC (User Generated Content) + Marketing Content Brief that a {role} can immediately action. The brief must cover:
+1. A compelling UGC creator brief (who to hire, what to film, exact talking points)
+2. Platform-specific content strategy
+3. Hooks, CTAs, hashtags, and posting schedule
+4. Video content ideas with scripts
+5. Strategic marketing insights
+
+Return EXACTLY this format. No extra text. No markdown. No bullet symbols:
+
+HOOK: [One irresistible opening hook line for the video, max 15 words, must create curiosity or emotion]
+PLATFORM: [Exact platforms e.g. YouTube Shorts + Instagram Reels + TikTok]
+FORMAT: [Exact format e.g. 60-sec before/after transformation Reel]
+CTA: [Specific conversion-focused call to action with URL or action]
+POST_TIME: [Best day and exact UK time e.g. Thursday 7pm UK]
+HASHTAGS: [8-10 UK DIY hashtags including #DremelUK]
+IDEA_1: [Specific YouTube/Reel video title idea — must be clickable and trend-relevant]
+IDEA_2: [Second specific video title idea with different angle]
+IDEA_3: [Third specific video title idea targeting different audience segment]
+UGC_CREATOR_PROFILE: [Exact description of ideal UGC creator — age, niche, follower range, style]
+UGC_TALKING_POINTS: [3 exact things the creator must say on camera about {product}]
+UGC_DO_NOT_SAY: [2 things the creator must NOT say — brand safety guidelines]
+UGC_GIFTING: [What Dremel should send the creator — product + accessories]
+UGC_USAGE_RIGHTS: [Usage rights Dremel should request — platforms and duration]
+SCRIPT_HOOK: [Exact first 5 seconds of video script — word for word]
+SCRIPT_BODY: [Exact 15-40 second body of video script — word for word]
+SCRIPT_CTA: [Exact last 10 seconds call to action — word for word]
+BRAND_TONE: [How content should feel — e.g. aspirational, educational, fun]
+TARGET_AUDIENCE: [Exact UK audience segment with age, interest, behaviour]
+INSIGHT: [One sharp strategic marketing insight specific to {trend} and Dremel, max 25 words]"""
             }],
-            max_tokens=600,
-            temperature=0.7
+            max_tokens=1200,
+            temperature=0.75
         )
         result = {}
         for line in response.choices[0].message.content.strip().split("\n"):
@@ -752,18 +778,47 @@ INSIGHT: [One strategic marketing insight max 20 words]"""
         st.error(f"Groq AI error: {e}"); return None
 
 # ── DOCX ──────────────────────────────────────────────────────
-def make_docx(trend, role, product, brief, ideas):
+def make_docx(trend, role, product, aib, ideas):
     try:
         from docx import Document
         doc = Document()
-        doc.add_heading("DREMEL — AI Content Brief", 0)
-        doc.add_heading(f"Trend: {trend}  |  Role: {role}", 1)
-        doc.add_paragraph(f"Generated: {datetime.now().strftime('%d %b %Y %H:%M')} | Product: {product}")
-        doc.add_heading("Brief", 2)
-        for k, v in brief:
-            p = doc.add_paragraph(); p.add_run(f"{k}: ").bold = True; p.add_run(str(v))
-        doc.add_heading("Video Ideas", 2)
-        for idea in ideas: doc.add_paragraph(f"• {idea}", style="List Bullet")
+        doc.add_heading("DREMEL — Full UGC & Marketing Content Brief", 0)
+        doc.add_heading(f"Trend: {trend}  |  Role: {role}  |  Product: {product}", 1)
+        doc.add_paragraph(f"Generated: {datetime.now().strftime('%d %b %Y %H:%M')}")
+
+        doc.add_heading("SECTION 1 — Content Strategy Brief", 2)
+        for k in ["HOOK","PLATFORM","FORMAT","CTA","POST_TIME","HASHTAGS","BRAND_TONE","TARGET_AUDIENCE","INSIGHT"]:
+            v = aib.get(k,"")
+            if v:
+                p = doc.add_paragraph()
+                p.add_run(f"{k.replace('_',' ')}: ").bold = True
+                p.add_run(str(v))
+
+        doc.add_heading("SECTION 2 — Video Content Ideas", 2)
+        for idea in ideas:
+            doc.add_paragraph(f"• {idea}", style="List Bullet")
+
+        doc.add_heading("SECTION 3 — UGC Creator Brief", 2)
+        for k in ["UGC_CREATOR_PROFILE","UGC_TALKING_POINTS","UGC_DO_NOT_SAY","UGC_GIFTING","UGC_USAGE_RIGHTS"]:
+            v = aib.get(k,"")
+            if v:
+                p = doc.add_paragraph()
+                p.add_run(f"{k.replace('UGC_','').replace('_',' ')}: ").bold = True
+                p.add_run(str(v))
+
+        doc.add_heading("SECTION 4 — Full Video Script", 2)
+        for k in ["SCRIPT_HOOK","SCRIPT_BODY","SCRIPT_CTA"]:
+            v = aib.get(k,"")
+            if v:
+                p = doc.add_paragraph()
+                p.add_run(f"{k.replace('SCRIPT_','').replace('_',' ')}: ").bold = True
+                p.add_run(f'"{str(v)}"')
+
+        doc.add_heading("SECTION 5 — Keyword Expansion", 2)
+        doc.add_paragraph(f"Keyword: {trend}")
+        doc.add_paragraph(f"Search Intent: How to do {trend.lower()} for beginners UK 2025")
+        doc.add_paragraph(f"Content Idea: I tried {trend.lower()} using only a {product}")
+
         buf = BytesIO(); doc.save(buf); buf.seek(0); return buf
     except: return None
 
@@ -1250,47 +1305,117 @@ with tab6:
         """, unsafe_allow_html=True)
 
         if aib:
-            dk=["HOOK","PLATFORM","FORMAT","CTA","POST_TIME","HASHTAGS","INSIGHT"]
+            # ── SECTION 1: Core Brief ──
+            st.markdown("""
+            <div style='background:#1A4C96;border-radius:8px;padding:10px 18px;margin-bottom:16px;'>
+                <p style='color:white;font-weight:700;font-size:0.8em;letter-spacing:2px;text-transform:uppercase;margin:0;'>
+                    SECTION 1 — CONTENT STRATEGY BRIEF</p>
+            </div>""", unsafe_allow_html=True)
+            dk=["HOOK","PLATFORM","FORMAT","CTA","POST_TIME","HASHTAGS","BRAND_TONE","TARGET_AUDIENCE","INSIGHT"]
             ik=["IDEA_1","IDEA_2","IDEA_3"]
             bi=[(k,aib.get(k,"")) for k in dk if aib.get(k)]
             idls=[aib.get(k,"") for k in ik if aib.get(k)]
 
             cb1,cb2=st.columns(2); half=len(bi)//2
             for lbl,val in bi[:half]:
-                cb1.markdown(f"<div class='brief-card'><span class='brief-tag'>{lbl}</span><p class='brief-text'>{val}</p></div>", unsafe_allow_html=True)
+                cb1.markdown(f"<div class='brief-card'><span class='brief-tag'>{lbl.replace('_',' ')}</span><p class='brief-text'>{val}</p></div>", unsafe_allow_html=True)
             for lbl,val in bi[half:]:
-                cb2.markdown(f"<div class='brief-card'><span class='brief-tag'>{lbl}</span><p class='brief-text'>{val}</p></div>", unsafe_allow_html=True)
+                cb2.markdown(f"<div class='brief-card'><span class='brief-tag'>{lbl.replace('_',' ')}</span><p class='brief-text'>{val}</p></div>", unsafe_allow_html=True)
 
+            # ── SECTION 2: Video Ideas ──
             st.markdown("<hr>", unsafe_allow_html=True)
-            st.markdown("<p style='font-weight:700;color:#0B1B3E;font-size:0.92em;margin-bottom:12px;'>Content Ideas</p>", unsafe_allow_html=True)
+            st.markdown("""
+            <div style='background:#1A4C96;border-radius:8px;padding:10px 18px;margin-bottom:16px;'>
+                <p style='color:white;font-weight:700;font-size:0.8em;letter-spacing:2px;text-transform:uppercase;margin:0;'>
+                    SECTION 2 — VIDEO CONTENT IDEAS</p>
+            </div>""", unsafe_allow_html=True)
             ic1,ic2,ic3=st.columns(3)
             for idx,(idea,col) in enumerate(zip(idls,[ic1,ic2,ic3])):
                 col.markdown(f"""
-                <div class='analytics-card' style='border-top:3px solid {ACCENT};'>
-                    <p style='font-size:0.65em;font-weight:700;color:{ACCENT};text-transform:uppercase;letter-spacing:1.5px;margin:0 0 8px 0;'>Video Idea {idx+1}</p>
-                    <p style='font-weight:600;color:#0B1B3E;font-size:0.88em;line-height:1.5;margin:0;'>🎬 {idea}</p>
+                <div class='analytics-card' style='border-top:3px solid #1A4C96;'>
+                    <p style='font-size:0.65em;font-weight:700;color:#1A4C96;text-transform:uppercase;letter-spacing:1.5px;margin:0 0 8px 0;'>Video Idea {idx+1}</p>
+                    <p style='font-weight:600;color:#1E2330;font-size:0.88em;line-height:1.5;margin:0;'>🎬 {idea}</p>
                 </div>""", unsafe_allow_html=True)
 
+            # ── SECTION 3: UGC Creator Brief ──
             st.markdown("<hr>", unsafe_allow_html=True)
-            st.markdown("<p style='font-weight:700;color:#0B1B3E;font-size:0.92em;margin-bottom:12px;'>Keyword → Search Intent → Content Idea</p>", unsafe_allow_html=True)
+            st.markdown("""
+            <div style='background:#E8681A;border-radius:8px;padding:10px 18px;margin-bottom:16px;'>
+                <p style='color:white;font-weight:700;font-size:0.8em;letter-spacing:2px;text-transform:uppercase;margin:0;'>
+                    SECTION 3 — UGC CREATOR BRIEF (User Generated Content)</p>
+            </div>""", unsafe_allow_html=True)
+
+            ugc_keys = ["UGC_CREATOR_PROFILE","UGC_TALKING_POINTS","UGC_DO_NOT_SAY","UGC_GIFTING","UGC_USAGE_RIGHTS"]
+            ugc_icons = {"UGC_CREATOR_PROFILE":"👤","UGC_TALKING_POINTS":"🎙️","UGC_DO_NOT_SAY":"🚫","UGC_GIFTING":"🎁","UGC_USAGE_RIGHTS":"📋"}
+            ugc_colors = {"UGC_CREATOR_PROFILE":"#1A4C96","UGC_TALKING_POINTS":"#28A745","UGC_DO_NOT_SAY":"#DC3545","UGC_GIFTING":"#E8681A","UGC_USAGE_RIGHTS":"#1A4C96"}
+
+            ug1,ug2 = st.columns(2)
+            for i,(k) in enumerate(ugc_keys):
+                val = aib.get(k,"Not specified")
+                if val:
+                    col = ug1 if i%2==0 else ug2
+                    icon = ugc_icons.get(k,"📌")
+                    color = ugc_colors.get(k,"#1A4C96")
+                    label = k.replace("UGC_","").replace("_"," ")
+                    col.markdown(f"""
+                    <div style='background:white;border-radius:8px;padding:14px 16px;margin-bottom:10px;
+                         border:1px solid #E1E5EB;border-left:4px solid {color};box-shadow:0 1px 4px rgba(26,76,150,0.06);'>
+                        <p style='font-size:0.65em;font-weight:700;color:{color};text-transform:uppercase;
+                             letter-spacing:1.5px;margin:0 0 6px 0;'>{icon} {label}</p>
+                        <p style='color:#1E2330;font-size:0.88em;line-height:1.6;margin:0;font-weight:400;'>{val}</p>
+                    </div>""", unsafe_allow_html=True)
+
+            # ── SECTION 4: Video Script ──
+            st.markdown("<hr>", unsafe_allow_html=True)
+            st.markdown("""
+            <div style='background:#1E2330;border-radius:8px;padding:10px 18px;margin-bottom:16px;'>
+                <p style='color:white;font-weight:700;font-size:0.8em;letter-spacing:2px;text-transform:uppercase;margin:0;'>
+                    SECTION 4 — FULL VIDEO SCRIPT (Word for Word)</p>
+            </div>""", unsafe_allow_html=True)
+
+            script_keys = ["SCRIPT_HOOK","SCRIPT_BODY","SCRIPT_CTA"]
+            script_labels = {"SCRIPT_HOOK":"🎬 Hook (0–5 sec)","SCRIPT_BODY":"🎙️ Body (5–50 sec)","SCRIPT_CTA":"📣 Call to Action (50–60 sec)"}
+            script_colors = {"SCRIPT_HOOK":"#E8681A","SCRIPT_BODY":"#1A4C96","SCRIPT_CTA":"#28A745"}
+
+            for k in script_keys:
+                val = aib.get(k,"")
+                if val:
+                    color = script_colors.get(k,"#1A4C96")
+                    label = script_labels.get(k,k)
+                    st.markdown(f"""
+                    <div style='background:white;border-radius:8px;padding:16px 20px;margin-bottom:10px;
+                         border:1px solid #E1E5EB;border-left:5px solid {color};box-shadow:0 1px 4px rgba(26,76,150,0.06);'>
+                        <p style='font-size:0.72em;font-weight:700;color:{color};text-transform:uppercase;
+                             letter-spacing:1.5px;margin:0 0 8px 0;'>{label}</p>
+                        <p style='color:#1E2330;font-size:0.92em;line-height:1.7;margin:0;
+                             font-style:italic;font-weight:500;'>"{val}"</p>
+                    </div>""", unsafe_allow_html=True)
+
+            # ── SECTION 5: Keyword Expansion ──
+            st.markdown("<hr>", unsafe_allow_html=True)
+            st.markdown("""
+            <div style='background:#1A4C96;border-radius:8px;padding:10px 18px;margin-bottom:16px;'>
+                <p style='color:white;font-weight:700;font-size:0.8em;letter-spacing:2px;text-transform:uppercase;margin:0;'>
+                    SECTION 5 — KEYWORD EXPANSION STRATEGY</p>
+            </div>""", unsafe_allow_html=True)
             ek1,ek2,ek3=st.columns(3)
-            lvl_colors=[NAVY,ACCENT,GREEN]
+            lvl_colors=["#1A4C96","#E8681A","#28A745"]
             lvl_labels=["Level 1 — Keyword","Level 2 — Search Intent","Level 3 — Content Idea"]
             lvl_bodies=[sel_trend,f"How to do {sel_trend.lower()} for beginners UK 2025",f"I tried {sel_trend.lower()} using only a {sel_product} — here's what happened"]
             for col,color,lbl,body in zip([ek1,ek2,ek3],lvl_colors,lvl_labels,lvl_bodies):
                 col.markdown(f"""
                 <div class='analytics-card' style='border-top:3px solid {color};'>
                     <p style='font-size:0.65em;font-weight:700;color:{color};text-transform:uppercase;letter-spacing:1.5px;margin:0 0 8px 0;'>{lbl}</p>
-                    <p style='font-weight:600;color:#0B1B3E;font-size:0.88em;line-height:1.5;margin:0;'>{body}</p>
+                    <p style='font-weight:600;color:#1E2330;font-size:0.88em;line-height:1.5;margin:0;'>{body}</p>
                 </div>""", unsafe_allow_html=True)
 
             st.markdown("<div style='height:8px;'></div>", unsafe_allow_html=True)
-            dbuf=make_docx(sel_trend,sel_role,sel_product,bi,idls)
+            dbuf=make_docx(sel_trend,sel_role,sel_product,aib,idls)
             if dbuf:
                 st.download_button(
-                    label="📄  Download Brief as Word Document",
+                    label="📄  Download Full UGC + Marketing Brief as Word Document",
                     data=dbuf,
-                    file_name=f"Dremel_Brief_{sel_trend.replace(' ','_')}.docx",
+                    file_name=f"Dremel_UGC_Brief_{sel_trend.replace(' ','_')}_{sel_role.replace(' ','_')}.docx",
                     mime="application/vnd.openxmlformats-officedocument.wordprocessingml.document"
                 )
         else:
