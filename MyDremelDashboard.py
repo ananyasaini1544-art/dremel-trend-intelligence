@@ -1053,6 +1053,24 @@ for col, (val, lbl) in zip([k1,k2,k3,k4,k5], kpi_data):
     """, unsafe_allow_html=True)
 
 st.markdown("<div style='height:8px;'></div>", unsafe_allow_html=True)
+st.markdown(f"""
+<div style='background:linear-gradient(135deg,#1A4C96,#2A5EAF);
+     border-radius:8px;padding:14px 24px;margin-bottom:16px;
+     display:flex;justify-content:space-between;align-items:center;'>
+    <div>
+        <p style='color:rgba(255,255,255,0.6);font-size:0.72em;
+             text-transform:uppercase;letter-spacing:2px;margin:0;'>
+             Highest Trending Right Now</p>
+        <p style='color:white;font-size:1.1em;font-weight:700;margin:4px 0 0 0;'>
+             {leaderboard.iloc[0]["keyword_clean"]} — Score: {leaderboard.iloc[0]["avg_score"]:.2f} 
+             &nbsp;·&nbsp; Avg Views: {int(leaderboard.iloc[0]["avg_views"]/1e6):.0f}M</p>
+    </div>
+    <div style='background:#E8681A;color:white;padding:8px 20px;
+         border-radius:4px;font-weight:700;font-size:0.85em;letter-spacing:1px;'>
+         CREATE CONTENT NOW
+    </div>
+</div>
+""", unsafe_allow_html=True)
 
 # ════════════════════════════════════════════════════════════
 #  TABS
