@@ -1057,7 +1057,16 @@ st.markdown("<div style='height:8px;'></div>", unsafe_allow_html=True)
 # ════════════════════════════════════════════════════════════
 #  TABS
 # ════════════════════════════════════════════════════════════
-tab1,tab2,tab3,tab4,tab5,tab6,tab7 = st.tabs([
+tab1,tab2,tab3,tab4,tab5,tab6,tab7,tab8 = st.tabs([
+    "Trend Leaderboard",
+    "Google Trends UK",
+    "Audience Sentiment",
+    "Gap Analysis",
+    "YouTube Insights",
+    "AI Ideation & Briefs",
+    "Roadmap",
+    "Dremel Diagnosis"
+])([
     "Trend Leaderboard",
     "Google Trends UK",
     "Audience Sentiment",
@@ -1543,6 +1552,111 @@ with tab7:
     </div>
     """, unsafe_allow_html=True)
 
+# ── TAB 8 — DREMEL DIAGNOSIS ─────────────────────────────────
+with tab8:
+    st.markdown("""
+    <div class='section-header-block'>
+        <p class='section-eyebrow'>Channel Health</p>
+        <p class='section-title'>Dremel Channel Diagnosis</p>
+        <p class='section-subtitle'>How Dremel performs vs competitors across UK DIY YouTube</p>
+    </div>
+    <hr class='section-divider'>
+    """, unsafe_allow_html=True)
+
+    dremel_videos     = df[df["is_dremel"] == True]
+    competitor_videos = df[df["is_dremel"] == False]
+
+    c1, c2, c3, c4 = st.columns(4)
+
+    dremel_avg_views   = int(dremel_videos["views"].mean()) if len(dremel_videos) > 0 else 0
+    comp_avg_views     = int(competitor_videos["views"].mean()) if len(competitor_videos) > 0 else 0
+    dremel_avg_score   = round(dremel_videos["trend_score"].mean(), 2) if len(dremel_videos) > 0 else 0
+    comp_avg_score     = round(competitor_videos["trend_score"].mean(), 2) if len(competitor_videos) > 0 else 0
+    dremel_video_count = len(dremel_videos)
+    comp_video_count   = len(competitor_videos)
+
+    for col, val, lbl, color in zip(
+        [c1, c2, c3, c4],
+        [f"{dremel_avg_views:,}", f"{comp_avg_views:,}",
+         str(dremel_avg_score), str(comp_avg_score)],
+        ["Dremel Avg Views", "Competitor Avg Views",
+         "Dremel Trend Score", "Competitor Trend Score"],
+        ["#1A4C96", "#E8681A", "#1A4C96", "#E8681A"]
+    ):
+        col.markdown(f"""
+        <div class='kpi-card' style='border-top:4px solid {color};'>
+            <p class='kpi-value' style='color:{color};'>{val}</p>
+            <p class='kpi-label'>{lbl}</p>
+        </div>""", unsafe_allow_html=True)
+
+    st.markdown("<hr>", unsafe_allow_html=True)
+
+    col_d1, col_d2 = st.columns(2)
+
+    with col_d1:
+        st.markdown("""
+        <p style='font-weight:700;color:#1A4C96;font-size:0.92em;
+        margin-bottom:12px;text-transform:uppercase;letter-spacing:1px;'>
+        Dremel Videos Found</p>""", unsafe_allow_html=True)
+
+        if len(dremel_videos) > 0:
+            for _, row in dremel_videos.head(5).iterrows():
+                st.markdown(f"""
+                <div style='background:white;border-radius:8px;padding:12px 16px;
+                     margin-bottom:8px;border-left:4px solid #1A4C96;
+                     box-shadow:0 1px 4px rgba(26,76,150,0.08);'>
+                    <p style='color:#1A4C96;font-weight:600;margin:0;font-size:0.88em;'>
+                        {str(row["title"])[:70]}...</p>
+                    <p style='color:#9CA3B0;margin:4px 0 0 0;font-size:0.78em;'>
+                        {int(row["views"]):,} views · Score: {row["trend_score"]}</p>
+                </div>""", unsafe_allow_html=True)
+        else:
+            st.markdown("""
+            <div style='background:#FFF8F5;border-radius:8px;padding:20px;
+                 border:1px solid #FDDCCC;text-align:center;'>
+                <p style='color:#E8681A;font-weight:700;margin:0;'>
+                    No Dremel videos found in current data</p>
+                <p style='color:#9CA3B0;margin:8px 0 0 0;font-size:0.85em;'>
+                    Dremel has zero presence in these trending topics</p>
+            </div>""", unsafe_allow_html=True)
+
+    with col_d2:
+        st.markdown("""
+        <p style='font-weight:700;color:#E8681A;font-size:0.92em;
+        margin-bottom:12px;text-transform:uppercase;letter-spacing:1px;'>
+        Top Competitor Videos</p>""", unsafe_allow_html=True)
+
+        for _, row in competitor_videos.sort_values(
+            "trend_score", ascending=False).head(5).iterrows():
+            st.markdown(f"""
+            <div style='background:white;border-radius:8px;padding:12px 16px;
+                 margin-bottom:8px;border-left:4px solid #E8681A;
+                 box-shadow:0 1px 4px rgba(232,104,26,0.08);'>
+                <p style='color:#1E2330;font-weight:600;margin:0;font-size:0.88em;'>
+                    {str(row["title"])[:70]}...</p>
+                <p style='color:#9CA3B0;margin:4px 0 0 0;font-size:0.78em;'>
+                    {row["channel"]} · {int(row["views"]):,} views · 
+                    Score: {row["trend_score"]}</p>
+            </div>""", unsafe_allow_html=True)
+
+    st.markdown("<hr>", unsafe_allow_html=True)
+    st.markdown(f"""
+    <div style='background:linear-gradient(135deg,#1A4C96,#2A5EAF);
+         border-radius:8px;padding:20px 24px;'>
+        <p style='color:rgba(255,255,255,0.6);font-size:0.72em;
+             text-transform:uppercase;letter-spacing:2px;margin:0 0 8px 0;'>
+             Diagnosis Summary</p>
+        <p style='color:white;font-size:1em;font-weight:600;margin:0;line-height:1.8;'>
+             Dremel has <strong>{dremel_video_count}</strong> videos in trending topics vs
+             <strong>{comp_video_count}</strong> competitor videos.<br>
+             Competitor content averages <strong>{comp_avg_views:,}</strong> views vs
+             Dremel's <strong>{dremel_avg_views:,}</strong> views.<br>
+             {"Dremel is UNDERPERFORMING — immediate content action required." 
+              if comp_avg_views > dremel_avg_views 
+              else "Dremel is performing well — maintain momentum."}
+        </p>
+    </div>
+    """, unsafe_allow_html=True)
 # ── FOOTER ───────────────────────────────────────────────────
 st.markdown(f"""
 <div class='platform-footer'>
