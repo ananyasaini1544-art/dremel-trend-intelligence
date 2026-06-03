@@ -46,7 +46,7 @@ COMMENTS_URL    = "https://www.googleapis.com/youtube/v3/commentThreads"
 # ════════════════════════════════════════════════════════════
 #  PREMIUM CSS — Enterprise SaaS Design System
 # ════════════════════════════════════════════════════════════
-st.markdown("""
+st.markdown(f"""
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Barlow+Condensed:wght@500;600;700;800&display=swap');
 
