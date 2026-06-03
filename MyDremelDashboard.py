@@ -1204,7 +1204,7 @@ with tab3:
             st.markdown(f"""
             <div class='analytics-card' style='padding:14px 18px;margin-bottom:8px;'>
                 <div style='display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;'>
-                    <p style='font-weight:700;color:#0B1B3E;font-size:0.88em;margin:0;'>{clean_label(kw)}</p>
+                    <p style='font-weight:700;color:#0B1B3E;font-size:0.88em;margin:0;'>{kw}</p>
                     <span style='font-size:0.72em;color:#9CA3B0;'>{n} comments analysed</span>
                 </div>
                 <div style='height:6px;border-radius:3px;overflow:hidden;background:#F0F2F5;display:flex;gap:1px;margin-bottom:8px;'>
