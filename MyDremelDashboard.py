@@ -1152,8 +1152,8 @@ with tab2:
     td=[]; gp2=st.progress(0); kf=selected_keywords[:6]
     for i,kw in enumerate(kf):
         gp2.progress((i+1)/len(kf))
-        gt=get_trends(kw)
-        td.append({"Keyword":clean_label(kw),"Search Score":gt["current"],"Growth %":gt["growth"],"Peak":gt["peak"]})
+        gt_result=get_trends(kw)
+        td.append({"Keyword":clean_label(kw),"Search Score":gt_result["current"],"Growth %":gt_result["growth"],"Peak":gt_result["peak"]})
         time.sleep(3)
     gp2.empty()
     gt_df = pd.DataFrame(td).sort_values("Growth %", ascending=False)
