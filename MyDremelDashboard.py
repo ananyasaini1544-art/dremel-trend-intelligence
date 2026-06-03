@@ -46,7 +46,7 @@ COMMENTS_URL    = "https://www.googleapis.com/youtube/v3/commentThreads"
 # ════════════════════════════════════════════════════════════
 #  PREMIUM CSS — Enterprise SaaS Design System
 # ════════════════════════════════════════════════════════════
-st.markdown(f"""
+st.markdown("""
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Barlow+Condensed:wght@500;600;700;800&display=swap');
 
@@ -638,6 +638,23 @@ hr { border-color: var(--dremel-gray-200) !important; }
 header[data-testid="stHeader"] { display: none !important; }
 #MainMenu { display: none !important; }
 footer { display: none !important; }
+</style>
+""", unsafe_allow_html=True)
+st.markdown(f"""
+<style>
+.stApp::before {{
+    content: '';
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background-image: url('{bg_image}');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    opacity: 0.07;
+    z-index: 0;
+    pointer-events: none;
+}}
 </style>
 """, unsafe_allow_html=True)
 
