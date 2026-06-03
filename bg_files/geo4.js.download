@@ -1,0 +1,17 @@
+(function(){
+  window['optimizely'] = window['optimizely'] || [];
+  window['optimizely'].push(['activateGeoDelayedExperiments', {
+    'location':{
+      'city': "GHĀZIĀBĀD",
+      'continent': "AS",
+      'country': "IN",
+      'region': "UP",
+      'dma': ""
+    },
+    'ip':"14.99.35.90"
+  }]);
+})
+
+()
+
+;

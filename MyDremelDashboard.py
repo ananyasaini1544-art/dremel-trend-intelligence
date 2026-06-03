@@ -16,7 +16,17 @@ from datetime import datetime
 from io import BytesIO
 from dotenv import load_dotenv
 
-load_dotenv()
+load_dotenv()import base64
+
+def get_bg_image():
+    try:
+        with open("bg.jpg", "rb") as f:
+            data = base64.b64encode(f.read()).decode()
+        return f"data:image/jpeg;base64,{data}"
+    except:
+        return ""
+
+bg_image = get_bg_image()
 
 st.set_page_config(
     page_title="Dremel Intelligence Platform",
@@ -68,6 +78,23 @@ html, body, .stApp {
     background-attachment: fixed !important;
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
     color: #1E2330 !important;
+}
+.stApp::before {
+    content: '';
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background-image: url('{bg_image}');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    opacity: 0.07;
+    z-index: 0;
+    pointer-events: none;
+}
+.main {
+    position: relative;
+    z-index: 1;
 }
 .main .block-container {
     padding-top: 0 !important;

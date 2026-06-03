@@ -1,0 +1,362 @@
+
+.motion-chat{
+    position: relative;
+}
+
+    .motion-chat .motion-message {
+        width: 100%;
+        position: absolute;
+        z-index: 9999;
+        padding-top: 5px;
+        height:40px;
+        text-align: center;
+        background-color: #f7f5f5;
+        border-radius: 0px 0px 5px 5px;
+        opacity: 0.93;
+        color:red;
+    }
+
+    .motion-chat select {
+        height: 40px !important;
+    }
+
+    .motion-chat .counter-indicator{
+        position: absolute;
+        width: 15px;
+        height: 15px;
+        border-radius: 50%;
+        background-color: #c5dc48;
+        color: black;
+        top: 2px;
+        left: 0px;
+        border: 1px solid white;
+        font-weight: 600;
+        font-size: 12px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    .motion-chat .webchat__toaster__listItem {
+        padding-left: 30px;
+        padding-right: 30px;
+    }
+
+    .motion-chat .webchat__toaster__listItem .webchat__toast__text {
+        text-align: center !important;
+    }
+
+    .motion-chat .motion-content {
+        position: relative;
+    }
+
+    .motion-chat .motion-content .send-button{
+        font: 400 16px Roboto-Regular, sans-serif !important;
+        color: #000000 !important;
+        text-align: center !important;
+    }
+
+    .motion-chat .mcx-custom-font {
+        font-family: Roboto-Regular, sans-serif;
+    }
+
+    .motion-chat button.ac-pushButton {
+        font-family: Roboto-Regular, sans-serif;
+    }
+
+    .motion-chat .webchat__toaster__listItem {
+        padding-left: 30px;
+        padding-right: 30px;
+    }
+
+    .motion-chat .webchat__toaster__listItem .webchat__toast__text {
+        text-align: center
+    }
+
+    .motion-chat .motion-chat-popup {
+        background-color: #ffffff;
+        display: block;
+        position: fixed;
+        bottom: 0;
+        right: 15px;
+        border-radius: 15px 15px 0px 0px;
+        border: 1px solid #DFE0DE;
+        box-shadow: 0 2px 4px 0 rgba(74,74,74,0.60);
+		z-index: 9999 !important;
+    }
+
+    .motion-chat .motion-chat-container {
+        padding: 0px;
+        background-color: white;
+        overflow-x: hidden;
+        position: relative;
+    }
+
+    .motion-chat .motion-chat-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding-right: 15px;
+        padding-left: 15px;
+        height: 48px;
+        font-weight: 400;
+        font-size: 20px;
+        font-family: Roboto-Regular, sans-serif;
+        border-radius: 15px 15px 0px 0px;
+        color: white;
+        background-color: black;
+        padding-top: 5px;
+    }
+
+    .motion-chat .motion-chat-header img {
+        width: 50px;
+        margin-right: 5px;
+    }
+
+    .motion-chat .motion-chat-header .motion-header-name {
+        display: flex;
+        align-items: center;
+    }
+
+    .motion-chat .motion-chat-header span{
+        margin-left: 5px;
+    }
+
+    .motion-chat .motion-chat-header .top-buttons{
+        color: white;
+    }
+
+    .motion-chat .motion-chat-header .top-buttons i{
+        margin-left: 10px;
+        font-size: 25px;
+        padding: 4px;
+    }
+
+    .motion-chat .motion-chat-container input::placeholder {
+        font-size: 14px;
+        color: #767676;
+    }
+
+    .motion-chat .motion-chat-open-button {
+        padding: 0px;
+        cursor: pointer;
+        position: fixed;
+        border: none;
+        background: none;
+        border:0px solid #fff;
+        -moz-border-radius:50px;
+        -webkit-border-radius:50px;
+        border-radius:50px;
+        width: 48px;
+        height: 48px;
+        outline: none;
+    }
+
+    .motion-chat .motion-chat-open-button img{
+        border:0px solid #fff;
+        -moz-border-radius:50px;
+        -webkit-border-radius:50px;
+        border-radius:50px;
+        width: 48px;
+        height: 48px;
+    }
+
+    .motion-chat .motion-chat-open-button .chat-icon{
+        -moz-box-shadow: 0 2px 4px 0 rgba(74,74,74,0.60);
+        -webkit-box-shadow: 0 2px 4px 0 rgba(74,74,74,0.60);
+        box-shadow: 0 2px 4px 0 rgba(74,74,74,0.60);
+    }
+
+    .motion-chat .motion-chat-container .btn {
+        background-color: #4CAF50;
+        color: white;
+        padding: 16px 20px;
+        border: none;
+        cursor: pointer;
+        width: 100%;
+        margin-bottom: 10px;
+        opacity: 0.8;
+    }
+
+    .motion-chat .motion-chat-container .cancel {
+        background-color: red;
+    }
+
+    .motion-chat .motion-chat-container .btn:hover, .open-button:hover {
+        opacity: 1;
+    }
+
+
+
+
+.motion-chat .motion-adaptive-card {
+    width: 100%;
+    height: 100%;
+    background-color: #e6e1e1;
+    position: absolute;
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+    font-family: Roboto-Regular, sans-serif;
+    padding-top: 1px;
+}
+
+    .motion-chat .motion-adaptive-card .adaptive-card-container {
+        width: 100%;
+        overflow: auto;
+    }
+
+    .motion-chat .motion-adaptive-card .adaptive-card-container .ac-adaptiveCard {
+        padding-left: 40px !important;
+        padding-right: 40px !important;
+    }
+
+    .motion-chat .motion-adaptive-card .adaptive-card-container::-webkit-scrollbar {
+        width: .3em;
+    }
+    
+    .motion-chat .motion-adaptive-card .adaptive-card-container::-webkit-scrollbar-track {
+        box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+    }
+    
+    .motion-chat .motion-adaptive-card .adaptive-card-container::-webkit-scrollbar-thumb {
+        background-color: #afacac;
+    }
+
+    .motion-chat .motion-adaptive-card input {
+        height: 30px;
+    }
+
+    .motion-chat .motion-adaptive-card button {
+        background-color: black;
+        color: white;
+        border:none;
+        height:35px;
+    }
+
+    .motion-chat .motion-adaptive-card *:focus {
+        outline: none;
+    }
+
+    .motion-chat .motion-adaptive-card .ac-textBlock {
+        margin-bottom: 10px;
+    }
+
+    .motion-chat .motion-adaptive-card .message{
+        font-size: 20px;
+        width: 196px;
+        align-items: center;
+        text-align: center;
+        line-height: 28px;
+        margin: 4px;
+    }
+
+    .motion-chat .motion-adaptive-card button.primary{
+        background-color: black;
+        padding: 0px;
+        color: white;
+        height: 32px;
+        width: 160px;
+        border-radius: 5px;
+        border: none;
+        margin: 12px;
+        font-size: 14px;
+        text-align: center;
+    }
+
+    .motion-chat .motion-adaptive-card button.secondary{
+        padding: 0px;
+        background-color: white;
+        color: black;
+        height: 32px;
+        width: 160px;
+        border-radius: 5px;
+        border: 2px solid black;
+        margin: 12px;
+        font-size: 14px;
+        font-weight: 500;
+        text-align: center;
+    }
+
+
+.motion-chat .motion-modal{
+    width: 100%;
+    height: 100%;
+    background-color: white;
+    position: absolute;
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+    font-family: Roboto-Regular, sans-serif;
+}
+
+    .motion-chat .motion-modal .message{
+        font-size: 20px;
+        width: 196px;
+        align-items: center;
+        text-align: center;
+        line-height: 28px;
+        margin: 4px;
+    }
+
+    .motion-chat .motion-modal button.primary{
+        background-color: black;
+        padding: 0px;
+        color: white;
+        height: 32px;
+        width: 160px;
+        border-radius: 5px;
+        border: none;
+        margin: 12px;
+        font-size: 14px;
+        text-align: center;
+    }
+
+    .motion-chat .motion-modal button.secondary{
+        padding: 0px;
+        background-color: white;
+        color: black;
+        height: 32px;
+        width: 160px;
+        border-radius: 5px;
+        border: 2px solid black;
+        margin: 12px;
+        font-size: 14px;
+        font-weight: 500;
+        text-align: center;
+    }
+
+
+/*-----------WEB CHAT ADAPTIVE CARD STYLES SECTION-----------*/
+
+/**
+* to override styles of adaptive cards inside webchat,
+* is necesssary to select the .ac-adaptiveCard class inside .webchat__bubble__content
+
+    .motion-chat .webchat__bubble__content .ac-adaptiveCard .ac-actionSet button {
+        color: black;
+    }
+
+* use this css rule to change the font color from the buttons in an adaptive card or add any css style for buttons
+*/
+
+.motion-chat .webchat__bubble__content .ac-adaptiveCard .ac-actionSet button {
+  background-color: black;
+  border-color: black;
+  color: white;
+  border-radius: 10px;
+}
+
+.motion-chat .webchat__adaptive-card-renderer .ac-actionSet .ac-pushButton[aria-pressed="true"] {
+  background-color: white;
+  border: 2px solid black;
+  color: black;
+  border-radius: 10px;
+}
+/*-----------WEB CHAT ADAPTIVE CARD STYLES END SECTION-----------*/
+
+
