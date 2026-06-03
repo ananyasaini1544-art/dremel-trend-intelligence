@@ -16,7 +16,9 @@ from datetime import datetime
 from io import BytesIO
 from dotenv import load_dotenv
 
-load_dotenv()import base64
+load_dotenv()
+
+import base64
 
 def get_bg_image():
     try:
