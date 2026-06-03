@@ -64,7 +64,8 @@ st.markdown("""
 
 /* ── Global Reset ── */
 html, body, .stApp {
-    background-color: #F5F7FA !important;
+    background: linear-gradient(135deg, #EEF2F9 0%, #F5F7FA 50%, #E8EDF5 100%) !important;
+    background-attachment: fixed !important;
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
     color: #1E2330 !important;
 }
