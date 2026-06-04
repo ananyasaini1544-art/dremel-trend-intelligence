@@ -90,7 +90,7 @@ html, body, .stApp {
     background-size: cover;
     background-position: center;
     background-attachment: fixed;
-    opacity: 0.25;
+    opacity: 0.30;
     z-index: 0;
     pointer-events: none;
 }
