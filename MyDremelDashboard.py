@@ -641,6 +641,18 @@ header[data-testid="stHeader"] { visibility: hidden !important; height: 0 !impor
 #MainMenu { display: none !important; }
 footer { display: none !important; }
 [data-testid="collapsedControl"] {
+    display: flex !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    position: fixed !important;
+    top: 10px !important;
+    left: 10px !important;
+    z-index: 999999 !important;
+    background: #1A4C96 !important;
+    color: white !important;
+    border-radius: 4px !important;
+    padding: 4px 8px !important;
+}[data-testid="collapsedControl"] {
     display: block !important;
     visibility: visible !important;
     color: white !important;
