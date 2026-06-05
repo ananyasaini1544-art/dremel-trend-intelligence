@@ -640,6 +640,12 @@ hr { border-color: var(--dremel-gray-200) !important; }
 header[data-testid="stHeader"] { display: none !important; }
 #MainMenu { display: none !important; }
 footer { display: none !important; }
+[data-testid="collapsedControl"] {
+    display: block !important;
+    visibility: visible !important;
+    color: white !important;
+    background: #1A4C96 !important;
+}
 </style>
 """, unsafe_allow_html=True)
 st.markdown(f"""
