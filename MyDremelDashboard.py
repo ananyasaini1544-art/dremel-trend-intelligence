@@ -637,7 +637,7 @@ hr { border-color: var(--dremel-gray-200) !important; }
 }
 
 /* ── Remove default Streamlit header ── */
-header[data-testid="stHeader"] { display: none !important; }
+header[data-testid="stHeader"] { visibility: hidden !important; height: 0 !important; }
 #MainMenu { display: none !important; }
 footer { display: none !important; }
 [data-testid="collapsedControl"] {
